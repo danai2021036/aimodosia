@@ -13,10 +13,16 @@ public class Secretary {
     @Column
     private Integer id;
 
-    @OneToMany(mappedBy = "secretary", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "secretary", cascade = {//CascadeType.DETACH,
+                                                CascadeType.REFRESH,
+                                                //CascadeType.PERSIST,
+                                                CascadeType.MERGE})
     private List<AppForm> appForms;
 
-    @OneToMany(mappedBy = "secretary", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "secretary", cascade = {//CascadeType.DETACH,
+                                                    CascadeType.REFRESH,
+                                                    //CascadeType.PERSIST,
+                                                    CascadeType.MERGE})
     private List<DonationRequest> donationRequests;
 
     public Integer getId() {

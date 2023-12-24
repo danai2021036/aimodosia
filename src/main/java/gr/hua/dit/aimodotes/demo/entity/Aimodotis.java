@@ -44,9 +44,8 @@ public class Aimodotis {
     @JoinColumn(name="blood_test_id")
     private BloodTest bloodTest;
 
-    @ManyToMany(cascade = {CascadeType.DETACH,
-                            CascadeType.MERGE,
-                            CascadeType.PERSIST,
+    @ManyToMany(cascade = { CascadeType.MERGE,
+                            //CascadeType.PERSIST,
                             CascadeType.REFRESH})
     @JoinTable(
             name = "donationRequest_aimodotis",

@@ -16,9 +16,9 @@ public class DonationRequest {
     @Column
     private String location;
 
-    @ManyToMany(cascade = {CascadeType.DETACH,
+    @ManyToMany(cascade = {//CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.PERSIST,
+            //CascadeType.PERSIST,
             CascadeType.REFRESH})
     @JoinTable(
             name = "donationRequest_aimodotis",
