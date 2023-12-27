@@ -12,12 +12,25 @@ public class AppForm {
     @Column
     private Integer id;
 
+    @Column
+    private String bloodtype;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="blood_test_id")
     private BloodTest bloodTest;
 
-    @Column
-    private String bloodtype;
+    //anapodi sxesh sto DB ???????????????????????????????????????????????????
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="aimodotis_id")
+    private Aimodotis aimodotis;
+
+    public Aimodotis getAimodotis() {
+        return aimodotis;
+    }
+
+    public void setAimodotis(Aimodotis aimodotis) {
+        this.aimodotis = aimodotis;
+    }
 
     public Integer getId() {
         return id;
@@ -35,7 +48,7 @@ public class AppForm {
         this.bloodtype = bloodtype;
     }
 
-    public AppForm(Integer id, String bloodtype) {
+    public AppForm(Integer id, String bloodtype, Aimodotis aimodotis) {
         this.id = id;
         this.bloodtype = bloodtype;
     }

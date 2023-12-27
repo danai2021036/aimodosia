@@ -17,6 +17,19 @@ public class BloodTest {
     @Column
     private String details;
 
+    //anapodh sxesh DB??????????????????????????????????????????????
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="aimodotis_id")
+    private Aimodotis aimodotis;
+
+    public Aimodotis getAimodotis() {
+        return aimodotis;
+    }
+
+    public void setAimodotis(Aimodotis aimodotis) {
+        this.aimodotis = aimodotis;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -41,7 +54,7 @@ public class BloodTest {
         this.details = details;
     }
 
-    public BloodTest(Integer id, Date date, String details) {
+    public BloodTest(Integer id, Date date, String details, Aimodotis aimodotis) {
         this.id = id;
         this.date = date;
         this.details = details;

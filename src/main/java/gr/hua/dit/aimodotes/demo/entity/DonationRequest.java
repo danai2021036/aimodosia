@@ -28,6 +28,14 @@ public class DonationRequest {
     )
     private List<Aimodotis> aimodotes;
 
+    public List<Aimodotis> getAimodotes() {
+        return aimodotes;
+    }
+
+    public void setAimodotes(List<Aimodotis> aimodotes) {
+        this.aimodotes = aimodotes;
+    }
+
     public Integer getId() {
         return id;
     }

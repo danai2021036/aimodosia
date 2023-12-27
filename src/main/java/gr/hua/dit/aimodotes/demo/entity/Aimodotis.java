@@ -55,6 +55,14 @@ public class Aimodotis {
     )
     private List<DonationRequest> donationRequests;
 
+    public List<DonationRequest> getDonationRequests() {
+        return donationRequests;
+    }
+
+    public void setDonationRequests(List<DonationRequest> donationRequests) {
+        this.donationRequests = donationRequests;
+    }
+
     public Integer getId() {
         return id;
     }
