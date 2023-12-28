@@ -24,6 +24,13 @@ public class AppForm {
     @JoinColumn(name="aimodotis_id")
     private Aimodotis aimodotis;
 
+    @ManyToOne(cascade = {//CascadeType.DETACH,
+                        CascadeType.REFRESH,
+                        //CascadeType.PERSIST,
+                        CascadeType.MERGE})
+    @JoinColumn(name = "secretary_id")
+    private Secretary secretary;
+
     public Aimodotis getAimodotis() {
         return aimodotis;
     }

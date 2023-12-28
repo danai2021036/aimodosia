@@ -28,6 +28,13 @@ public class DonationRequest {
     )
     private List<Aimodotis> aimodotes;
 
+    @ManyToOne(cascade = {//CascadeType.DETACH,
+            CascadeType.REFRESH,
+            //CascadeType.PERSIST,
+            CascadeType.MERGE})
+    @JoinColumn(name = "secretary_id")
+    private Secretary secretary;
+
     public List<Aimodotis> getAimodotes() {
         return aimodotes;
     }
