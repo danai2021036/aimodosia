@@ -36,15 +36,15 @@ public class Secretary {
     }
 
     @OneToMany(mappedBy = "secretary", cascade = {//CascadeType.DETACH,
-                                                CascadeType.REFRESH,
-                                                //CascadeType.PERSIST,
-                                                CascadeType.MERGE})
+            CascadeType.REFRESH,
+            //CascadeType.PERSIST,
+            CascadeType.MERGE})
     private List<AppForm> appForms;
 
     @OneToMany(mappedBy = "secretary", cascade = {//CascadeType.DETACH,
-                                                    CascadeType.REFRESH,
-                                                    //CascadeType.PERSIST,
-                                                    CascadeType.MERGE})
+            CascadeType.REFRESH,
+            //CascadeType.PERSIST,
+            CascadeType.MERGE})
     private List<DonationRequest> donationRequests;
 
     public Integer getId() {
@@ -55,8 +55,7 @@ public class Secretary {
         this.id = id;
     }
 
-    public Secretary(Integer id, String fname, String lname) {
-        this.id = id;
+    public Secretary(String fname, String lname) {
         this.fname = fname;
         this.lname = lname;
     }

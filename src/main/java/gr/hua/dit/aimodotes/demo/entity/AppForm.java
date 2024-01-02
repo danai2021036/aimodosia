@@ -25,9 +25,9 @@ public class AppForm {
     private Aimodotis aimodotis;
 
     @ManyToOne(cascade = {//CascadeType.DETACH,
-                        CascadeType.REFRESH,
-                        //CascadeType.PERSIST,
-                        CascadeType.MERGE})
+            CascadeType.REFRESH,
+            //CascadeType.PERSIST,
+            CascadeType.MERGE})
     @JoinColumn(name = "secretary_id")
     private Secretary secretary;
 
@@ -55,8 +55,7 @@ public class AppForm {
         this.bloodtype = bloodtype;
     }
 
-    public AppForm(Integer id, String bloodtype, Aimodotis aimodotis) {
-        this.id = id;
+    public AppForm(String bloodtype, Aimodotis aimodotis) {
         this.bloodtype = bloodtype;
     }
 

@@ -59,8 +59,8 @@ public class DonationRequest {
         this.location = location;
     }
 
-    public DonationRequest(Integer id, String location) {
-        this.id = id;
+    public DonationRequest(String location) {
+
         this.location = location;
     }
 

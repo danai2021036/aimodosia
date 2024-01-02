@@ -54,8 +54,8 @@ public class BloodTest {
         this.details = details;
     }
 
-    public BloodTest(Integer id, Date date, String details, Aimodotis aimodotis) {
-        this.id = id;
+    public BloodTest(Date date, String details, Aimodotis aimodotis) {
+
         this.date = date;
         this.details = details;
     }

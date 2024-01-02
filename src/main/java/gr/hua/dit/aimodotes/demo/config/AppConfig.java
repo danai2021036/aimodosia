@@ -29,8 +29,8 @@ public class AppConfig {
                         ("Bearer Authentication", createAPIKeyScheme()))
                 .info(new Info().title("DS PROJECT 2023 REST API")
                         .description("This API is used in Aimodosia project")
-                        .version("1.0").contact(new Contact().name("Group 19")
-                                .email("it2021036@hua.gr").url(""))
+                        .version("1.0").contact(new Contact().name("Anargyros Tsadimas")
+                                .email("tsadimas@hua.gr").url("https://tsadimas.github.io"))
                         .license(new License().name("License of API")
                                 .url("https://swagger.io/license/")));
         return info;

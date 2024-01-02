@@ -57,6 +57,14 @@ public class AuthController {
             roleRepository.save(new Role("ROLE_USER"));
             return null;
         });
+        roleRepository.findByName("ROLE_SECRETARY").orElseGet(() -> {
+            roleRepository.save(new Role("ROLE_SECRETARY"));
+            return null;
+        });
+        roleRepository.findByName("ROLE_AIMODOTIS").orElseGet(() -> {
+            roleRepository.save(new Role("ROLE_AIMODOTIS"));
+            return null;
+        });
     }
 
     @PostMapping("/signin")
@@ -118,12 +126,18 @@ public class AuthController {
                         roles.add(adminRole);
 
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName("ROLE_MODERATOR")
+                    case "secretary":
+                        Role secRole = roleRepository.findByName("ROLE_SECRETARY")
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
+                        roles.add(secRole);
 
                         break;
+                    case "aimodotis":
+                        Role aimRole = roleRepository.findByName("ROLE_AIMODOTIS")
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(aimRole);
+                        break;
+
                     default:
                         Role userRole = roleRepository.findByName("ROLE_USER")
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));

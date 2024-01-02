@@ -22,10 +22,10 @@ public class Aimodotis {
     private String email;
 
     @Column
-    private Integer phone;
+    private String phone;
 
     @Column
-    private Integer AMKA;
+    private String AMKA;
 
     @Column
     private Character sex;
@@ -45,8 +45,8 @@ public class Aimodotis {
     private BloodTest bloodTest;
 
     @ManyToMany(cascade = { CascadeType.MERGE,
-                            //CascadeType.PERSIST,
-                            CascadeType.REFRESH})
+            //CascadeType.PERSIST,
+            CascadeType.REFRESH})
     @JoinTable(
             name = "donationRequest_aimodotis",
             joinColumns = @JoinColumn(name = "aimodotis_id"),
@@ -95,19 +95,19 @@ public class Aimodotis {
         this.email = email;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public Integer getAMKA() {
+    public String getAMKA() {
         return AMKA;
     }
 
-    public void setAMKA(Integer AMKA) {
+    public void setAMKA(String AMKA) {
         this.AMKA = AMKA;
     }
 
@@ -135,7 +135,7 @@ public class Aimodotis {
         this.age = age;
     }
 
-    public Aimodotis(Integer id, String fname, String lname, String email, Integer phone, Integer AMKA, Character sex, Date last_donation, Integer age) {
+    public Aimodotis(String fname, String lname, String email, String phone, String AMKA, Character sex, Date last_donation, Integer age) {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
