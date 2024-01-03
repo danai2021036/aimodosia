@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AppFormService {
     @Autowired
@@ -23,6 +25,10 @@ public class AppFormService {
         appFormRepository.save(appForm);
     }
 
+    @Transactional
+    public List<AppForm> getAppForms(){
+        return appFormRepository.findAll();
+    }
     @Transactional
     public AppForm getAppForm(Integer appform_id){
         return appFormRepository.findById(appform_id).get();

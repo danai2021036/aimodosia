@@ -19,6 +19,17 @@ public class Secretary {
     @Column
     private String lname;
 
+    @Column
+    private String AFM;
+
+    public String getAFM() {
+        return AFM;
+    }
+
+    public void setAFM(String AFM) {
+        this.AFM = AFM;
+    }
+
     public String getFname() {
         return fname;
     }
@@ -55,9 +66,10 @@ public class Secretary {
         this.id = id;
     }
 
-    public Secretary(String fname, String lname) {
+    public Secretary(String fname, String lname, String AFM) {
         this.fname = fname;
         this.lname = lname;
+        this.AFM = AFM;
     }
 
     public Secretary() {
