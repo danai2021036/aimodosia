@@ -2,7 +2,10 @@ package gr.hua.dit.aimodotes.demo.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,6 +15,10 @@ public class DonationRequest {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Integer id;
+
+    @Column
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private LocalDate date;
 
     @Column
     private String location;
@@ -34,6 +41,15 @@ public class DonationRequest {
             CascadeType.MERGE})
     @JoinColumn(name = "secretary_id")
     private Secretary secretary;
+
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     public List<Aimodotis> getAimodotes() {
         return aimodotes;
@@ -59,9 +75,9 @@ public class DonationRequest {
         this.location = location;
     }
 
-    public DonationRequest(String location) {
-
+    public DonationRequest(String location, LocalDate date) {
         this.location = location;
+        this.date = date;
     }
 
     public DonationRequest() {
