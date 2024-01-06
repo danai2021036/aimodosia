@@ -1,12 +1,17 @@
 package gr.hua.dit.aimodotes.demo.rest;
 
+import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
+import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.http.ResponseEntity;
 import gr.hua.dit.aimodotes.demo.entity.Aimodotis;
 import gr.hua.dit.aimodotes.demo.entity.DonationRequest;
+import gr.hua.dit.aimodotes.demo.payload.response.MessageResponse;
 import gr.hua.dit.aimodotes.demo.repository.DonationRequestRepository;
 import gr.hua.dit.aimodotes.demo.service.DonationRequestService;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,6 +25,9 @@ public class DonationRequestRestController {
 
     @Autowired
     private DonationRequestService donationRequestService;
+
+    @Autowired
+    private AimodotisDAO aimodotisDAO;
 
     @PostConstruct
     public void setup() {
@@ -41,6 +49,7 @@ public class DonationRequestRestController {
             return null;
         }else {
             donationRequestService.saveDonationRequest(donationRequest);
+            searchAimodotesForRequest(donationRequest);
             return donationRequest;
         }
     }
@@ -58,6 +67,34 @@ public class DonationRequestRestController {
     }
 
     //mhnimta
+    @PostMapping("aimodotes/{donation_request_id}/{aimodotis_id}")
+    @ResponseBody
+    private String sendDonationRequest(@PathVariable Integer donation_request_id, @PathVariable Integer aimodotis_id){
+        Aimodotis aimodotis = aimodotisDAO.getAimodotis(aimodotis_id);
+        DonationRequest donationRequest = donationRequestService.getDonationRequest(donation_request_id);
+        donationRequest.addAimodotis(aimodotis);
+        donationRequestService.saveDonationRequest(donationRequest);
+        String message = aimodotis.getFname()+ "New Donation Request! Location: " + donationRequest.getLocation() + " Date: " + donationRequest.getDate();
+        return message;
+    }
+
     //search gramateias gia kapoio request
+    public void searchAimodotesForRequest(DonationRequest donationRequest){
+        List<Aimodotis> aimodotes = aimodotisDAO.getAimodotes();
+        String reqlocation = donationRequest.getLocation();
+        Integer i = 0;
+        for (Aimodotis aimodotis: aimodotes) {
+            if (aimodotis.getLocation()==reqlocation){
+                sendDonationRequest(donationRequest.getId(),aimodotis.getId());
+                i=1;
+            }
+        }
+        if(i==0){
+            System.out.println("No matches found for Donation Request: " + donationRequest.getId());
+        }
+
+    }
+
+
     //eleghos last aimodosias
 }

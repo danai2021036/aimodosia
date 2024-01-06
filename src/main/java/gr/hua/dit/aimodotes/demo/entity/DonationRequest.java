@@ -75,6 +75,10 @@ public class DonationRequest {
         this.location = location;
     }
 
+    public void addAimodotis(Aimodotis aimodotis){
+        this.aimodotes.add(aimodotis);
+    }
+
     public DonationRequest(String location, LocalDate date) {
         this.location = location;
         this.date = date;

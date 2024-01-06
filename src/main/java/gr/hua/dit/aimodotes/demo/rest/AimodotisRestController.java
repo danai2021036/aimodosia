@@ -28,15 +28,15 @@ public class AimodotisRestController {
     @PostConstruct
     public void setup() {
         aimodotisRepository.findByAMKA("15110301262").orElseGet(() -> {
-            aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@hua.gr", "6985762160", "15110301262", 'F', null, 20));
+            aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@hua.gr", "6985762160", "15110301262", 'F', null, 20, "Athens"));
             return null;
         });
         aimodotisRepository.findByAMKA("25110301550").orElseGet(() -> {
-            aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@hua.gr", "6980763944", "25110301550", 'M', null, 20));
+            aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@hua.gr", "6980763944", "25110301550", 'M', null, 20, "Athens"));
             return null;
         });
         aimodotisRepository.findByAMKA("13456789068").orElseGet(() -> {
-            aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@hua.gr", "6935546778", "13456789068", 'F', null, 20));
+            aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@hua.gr", "6935546778", "13456789068", 'F', null, 20,"Patra"));
             return null;
         });
     }
@@ -79,4 +79,6 @@ public class AimodotisRestController {
 //            return null;
 //        }
 //    }
+
+    //apodoxi aporripsi mnmtos
 }

@@ -1,5 +1,6 @@
 package gr.hua.dit.aimodotes.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -36,6 +37,9 @@ public class Aimodotis {
     @Column
     private Integer age;
 
+    @Column
+    private String location;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="app_form_id")
     private AppForm appForm;
@@ -44,6 +48,7 @@ public class Aimodotis {
     @JoinColumn(name="blood_test_id")
     private BloodTest bloodTest;
 
+    @JsonIgnore
     @ManyToMany(cascade = { CascadeType.MERGE,
             //CascadeType.PERSIST,
             CascadeType.REFRESH})
@@ -135,7 +140,15 @@ public class Aimodotis {
         this.age = age;
     }
 
-    public Aimodotis(String fname, String lname, String email, String phone, String AMKA, Character sex, Date last_donation, Integer age) {
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Aimodotis(String fname, String lname, String email, String phone, String AMKA, Character sex, Date last_donation, Integer age, String location) {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
@@ -144,6 +157,7 @@ public class Aimodotis {
         this.sex = sex;
         this.last_donation = last_donation;
         this.age = age;
+        this.location = location;
     }
     public Aimodotis() {
     }
