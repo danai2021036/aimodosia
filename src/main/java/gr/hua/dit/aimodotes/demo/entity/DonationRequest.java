@@ -79,6 +79,11 @@ public class DonationRequest {
         this.aimodotes.add(aimodotis);
     }
 
+    public void removeAimodotis(Aimodotis aimodotis) {
+        this.aimodotes.remove(aimodotis);
+        aimodotis.getDonationRequests().remove(this);
+    }
+
     public DonationRequest(String location, LocalDate date) {
         this.location = location;
         this.date = date;

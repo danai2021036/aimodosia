@@ -96,5 +96,4 @@ public class DonationRequestRestController {
     }
 
 
-    //eleghos last aimodosias
 }

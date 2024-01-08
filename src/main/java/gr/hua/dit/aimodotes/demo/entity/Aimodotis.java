@@ -2,7 +2,9 @@ package gr.hua.dit.aimodotes.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +34,8 @@ public class Aimodotis {
     private Character sex;
 
     @Column
-    private Date last_donation;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private LocalDate last_donation;
 
     @Column
     private Integer age;
@@ -49,7 +52,8 @@ public class Aimodotis {
     private BloodTest bloodTest;
 
     @JsonIgnore
-    @ManyToMany(cascade = { CascadeType.MERGE,
+    @ManyToMany(cascade = {//CascadeType.DETACH,
+            CascadeType.MERGE,
             //CascadeType.PERSIST,
             CascadeType.REFRESH})
     @JoinTable(
@@ -124,11 +128,11 @@ public class Aimodotis {
         this.sex = sex;
     }
 
-    public Date getLast_donation() {
+    public LocalDate getLast_donation() {
         return last_donation;
     }
 
-    public void setLast_donation(Date last_donation) {
+    public void setLast_donation(LocalDate last_donation) {
         this.last_donation = last_donation;
     }
 
@@ -148,7 +152,26 @@ public class Aimodotis {
         this.location = location;
     }
 
-    public Aimodotis(String fname, String lname, String email, String phone, String AMKA, Character sex, Date last_donation, Integer age, String location) {
+    @Override
+    public String toString() {
+        return "Aimodotis{" +
+                "id=" + id +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", AMKA='" + AMKA + '\'' +
+                ", sex=" + sex +
+                ", last_donation=" + last_donation +
+                ", age=" + age +
+                ", location='" + location + '\'' +
+                ", appForm=" + appForm +
+                ", bloodTest=" + bloodTest +
+                ", donationRequests=" + donationRequests +
+                '}';
+    }
+
+    public Aimodotis(String fname, String lname, String email, String phone, String AMKA, Character sex, LocalDate last_donation, Integer age, String location) {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
