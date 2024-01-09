@@ -49,7 +49,7 @@ public class DonationRequestRestController {
             return null;
         }else {
             donationRequestService.saveDonationRequest(donationRequest);
-            searchAimodotesForRequest(donationRequest);
+            //searchAimodotesForRequest(donationRequest);
             return donationRequest;
         }
     }
@@ -65,35 +65,5 @@ public class DonationRequestRestController {
     public DonationRequest getDonationRequest(@PathVariable Integer donation_request_id){
         return donationRequestService.getDonationRequest(donation_request_id);
     }
-
-    //mhnimta
-    @PostMapping("aimodotes/{donation_request_id}/{aimodotis_id}")
-    @ResponseBody
-    private String sendDonationRequest(@PathVariable Integer donation_request_id, @PathVariable Integer aimodotis_id){
-        Aimodotis aimodotis = aimodotisDAO.getAimodotis(aimodotis_id);
-        DonationRequest donationRequest = donationRequestService.getDonationRequest(donation_request_id);
-        donationRequest.addAimodotis(aimodotis);
-        donationRequestService.saveDonationRequest(donationRequest);
-        String message = aimodotis.getFname()+ "New Donation Request! Location: " + donationRequest.getLocation() + " Date: " + donationRequest.getDate();
-        return message;
-    }
-
-    //search gramateias gia kapoio request
-    public void searchAimodotesForRequest(DonationRequest donationRequest){
-        List<Aimodotis> aimodotes = aimodotisDAO.getAimodotes();
-        String reqlocation = donationRequest.getLocation();
-        Integer i = 0;
-        for (Aimodotis aimodotis: aimodotes) {
-            if (aimodotis.getLocation()==reqlocation){
-                sendDonationRequest(donationRequest.getId(),aimodotis.getId());
-                i=1;
-            }
-        }
-        if(i==0){
-            System.out.println("No matches found for Donation Request: " + donationRequest.getId());
-        }
-
-    }
-
 
 }
