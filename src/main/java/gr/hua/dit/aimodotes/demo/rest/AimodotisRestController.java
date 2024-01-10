@@ -40,15 +40,15 @@ public class AimodotisRestController {
     @PostConstruct
     public void setup() {
         aimodotisRepository.findByAMKA("15110301262").orElseGet(() -> {
-            aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@hua.gr", "6985762160", "15110301262", 'F', null, 20, "AB+","Athens"));
+            aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@hua.gr", "6985762160", "15110301262", 'F', null, 20, "Athens"));
             return null;
         });
         aimodotisRepository.findByAMKA("25110301550").orElseGet(() -> {
-            aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@hua.gr", "6980763944", "25110301550", 'M', null, 20, "0+","Athens"));
+            aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@hua.gr", "6980763944", "25110301550", 'M', null, 20, "Athens"));
             return null;
         });
         aimodotisRepository.findByAMKA("13456789068").orElseGet(() -> {
-            aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@hua.gr", "6935546778", "13456789068", 'F', null, 20,"A+", "Patra"));
+            aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@hua.gr", "6935546778", "13456789068", 'F', null, 20, "Patra"));
             return null;
         });
     }
@@ -97,7 +97,6 @@ public class AimodotisRestController {
             existingAimodotis.setSex(updatedAimodotis.getSex());
             existingAimodotis.setLast_donation(updatedAimodotis.getLast_donation());
             existingAimodotis.setAge(updatedAimodotis.getAge());
-            existingAimodotis.setBloodtype(updatedAimodotis.getBloodtype());
             existingAimodotis.setLocation(updatedAimodotis.getLocation());
 
             Aimodotis savedAimodotis = aimodotisRepository.save(existingAimodotis);

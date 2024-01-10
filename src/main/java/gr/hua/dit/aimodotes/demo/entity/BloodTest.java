@@ -15,6 +15,8 @@ public class BloodTest {
     private Date date;
 
     @Column
+    private String bloodtype;
+    @Column
     private String details;
 
     //anapodh sxesh DB??????????????????????????????????????????????
@@ -54,10 +56,18 @@ public class BloodTest {
         this.details = details;
     }
 
-    public BloodTest(Date date, String details, Aimodotis aimodotis) {
+    public String getBloodtype() {
+        return bloodtype;
+    }
 
+    public void setBloodtype(String bloodtype) {
+        this.bloodtype = bloodtype;
+    }
+
+    public BloodTest(Date date, String details, Aimodotis aimodotis, String bloodtype) {
         this.date = date;
         this.details = details;
+        this.bloodtype = bloodtype;
     }
 
     public BloodTest() {

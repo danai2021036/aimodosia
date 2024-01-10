@@ -4,6 +4,7 @@ import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
 import gr.hua.dit.aimodotes.demo.entity.Aimodotis;
 import gr.hua.dit.aimodotes.demo.entity.AppForm;
 import gr.hua.dit.aimodotes.demo.repository.AppFormRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,13 @@ public class AppFormService {
     }
 
     @Transactional
+    public void deleteAppForm(Integer appform_id){
+        AppForm appForm = appFormRepository.findById(appform_id)
+                .orElseThrow(()->new EntityNotFoundException("Application Form not found with id: "+ appform_id));
+        appFormRepository.delete(appForm);
+    }
+
+    @Transactional
     public List<AppForm> getAppForms(){
         return appFormRepository.findAll();
     }
@@ -34,8 +42,5 @@ public class AppFormService {
         return appFormRepository.findById(appform_id).get();
     }
 
-    public void deleteAppForm(Integer appform_id){
-        appFormRepository.deleteById(appform_id);
-    }
 
 }

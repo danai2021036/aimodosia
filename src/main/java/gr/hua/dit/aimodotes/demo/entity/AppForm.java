@@ -2,6 +2,7 @@ package gr.hua.dit.aimodotes.demo.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -12,8 +13,12 @@ public class AppForm {
     @Column
     private Integer id;
 
+    public enum Status {ACCEPTED, PENDING};
     @Column
-    private String bloodtype;
+    private Status status;
+
+    @Column
+    private LocalDate appDate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="blood_test_id")
@@ -43,20 +48,26 @@ public class AppForm {
         return id;
     }
 
-    public void setId(Integer id) {
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public LocalDate getAppDate() {
+        return appDate;
+    }
+
+    public void setAppDate(LocalDate appDate) {
+        this.appDate = appDate;
+    }
+
+    public AppForm(Integer id, Status status, LocalDate appDate) {
         this.id = id;
-    }
-
-    public String getBloodtype() {
-        return bloodtype;
-    }
-
-    public void setBloodtype(String bloodtype) {
-        this.bloodtype = bloodtype;
-    }
-
-    public AppForm(String bloodtype, Aimodotis aimodotis) {
-        this.bloodtype = bloodtype;
+        this.status = status;
+        this.appDate = appDate;
     }
 
     public AppForm() {

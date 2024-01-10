@@ -41,11 +41,9 @@ public class Aimodotis {
     private Integer age;
 
     @Column
-    private String bloodtype;
-
-    @Column
     private String location;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="app_form_id")
     private AppForm appForm;
@@ -147,13 +145,6 @@ public class Aimodotis {
         this.age = age;
     }
 
-    public String getBloodtype() {
-        return bloodtype;
-    }
-
-    public void setBloodtype(String bloodtype) {
-        this.bloodtype = bloodtype;
-    }
 
     public String getLocation() {
         return location;
@@ -161,6 +152,14 @@ public class Aimodotis {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public AppForm getAppForm() {
+        return appForm;
+    }
+
+    public void setAppForm(AppForm appForm) {
+        this.appForm = appForm;
     }
 
     @Override
@@ -175,7 +174,6 @@ public class Aimodotis {
                 ", sex=" + sex +
                 ", last_donation=" + last_donation +
                 ", age=" + age +
-                ", bloodtype='" + bloodtype + '\'' +
                 ", location='" + location + '\'' +
                 ", appForm=" + appForm +
                 ", bloodTest=" + bloodTest +
@@ -183,7 +181,7 @@ public class Aimodotis {
                 '}';
     }
 
-    public Aimodotis(String fname, String lname, String email, String phone, String AMKA, Character sex, LocalDate last_donation, Integer age, String bloodtype, String location) {
+    public Aimodotis(String fname, String lname, String email, String phone, String AMKA, Character sex, LocalDate last_donation, Integer age, String location) {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
@@ -192,7 +190,6 @@ public class Aimodotis {
         this.sex = sex;
         this.last_donation = last_donation;
         this.age = age;
-        this.bloodtype = bloodtype;
         this.location = location;
     }
     public Aimodotis() {

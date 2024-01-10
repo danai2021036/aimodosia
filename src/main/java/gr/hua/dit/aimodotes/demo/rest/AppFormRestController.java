@@ -10,12 +10,15 @@ import gr.hua.dit.aimodotes.demo.service.AppFormService;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/secretary/appform")
+@RequestMapping("/api/appform")
 @Hidden
 public class AppFormRestController {
 
@@ -25,29 +28,30 @@ public class AppFormRestController {
     @Autowired
     private AppFormRepository appFormRepository;
 
-    /*@PostConstruct
-    public void setup() {
-            appFormRepository.save(new AppForm("A", aimodotisDAO.getAimodotis(4)));
+    @Autowired
+    private AimodotisDAO aimodotisDAO;
 
-    }*/
+    @Autowired
+    private AimodotisRepository aimodotisRepository;
 
-    @GetMapping("")
-    public List<AppForm> getAppForms(){
-        return appFormService.getAppForms();
+    @PostMapping("/new")
+    public ResponseEntity<String> saveAppform(@RequestBody Aimodotis aimodotis){
+        try{
+            if(aimodotisRepository.findByAMKA(aimodotis.getAMKA()).isPresent()){
+                System.out.println("Aimodotis already exists.");
+                return null;
+            }else {
+                AppForm appForm = new AppForm();
+                appForm.setAppDate(LocalDate.now());
+                appForm.setStatus(AppForm.Status.PENDING);
+                aimodotis.setAppForm(appForm);
+                aimodotisDAO.saveAimodotis(aimodotis);
+                appFormService.saveAppForm(appForm, aimodotis.getId());
+                return ResponseEntity.ok("Application saved successfully!");
+            }
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving applicaton!");
+        }
     }
-
-    @GetMapping("{appform_id}")
-    public AppForm getAppForm(@PathVariable Integer appform_id){
-        return appFormService.getAppForm(appform_id);
-    }
-
-//    @PostMapping("{appform_id}/accept")
-//    public
-
-    @DeleteMapping("{appform_id}/decline")
-    public void deleteAppForm(@PathVariable Integer appform_id){
-        appFormService.deleteAppForm(appform_id);
-    }
-
 
 }
