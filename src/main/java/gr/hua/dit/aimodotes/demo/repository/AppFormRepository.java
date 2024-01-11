@@ -1,6 +1,7 @@
 package gr.hua.dit.aimodotes.demo.repository;
 
 
+import gr.hua.dit.aimodotes.demo.entity.Aimodotis;
 import gr.hua.dit.aimodotes.demo.entity.AppForm;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,6 @@ import java.util.Optional;
 public interface AppFormRepository extends JpaRepository<AppForm, Integer> {
 
     Optional<AppForm> findById(Integer appform_id);
+
+    Optional<AppForm> findByAimodotis(Aimodotis aimodotis);
 }

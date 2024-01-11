@@ -24,7 +24,6 @@ public class Secretary {
     private String AFM;
 
     @Column
-    @Email
     private String email;
 
     public String getAFM() {

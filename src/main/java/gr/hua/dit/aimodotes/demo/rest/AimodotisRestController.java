@@ -84,7 +84,7 @@ public class AimodotisRestController {
         });
         aimodotisRepository.findByAMKA("13456789068").orElseGet(() -> {
             Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@gmail.gr", "6935546778", "13456789068", 'F', null, 20, "Patra"));
-            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.PENDING,LocalDate.parse("2024-01-11")));
+            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.PENDING,LocalDate.parse("2024-01-09")));
             BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-12-22"), "details","B+"));
             appForm.setAimodotis(aimodotis);
             appForm.setBloodTest(bloodTest);
@@ -218,14 +218,16 @@ public class AimodotisRestController {
     @Secured("ROLE_USER")
     public ResponseEntity<String> confirmContactInfo(@PathVariable Integer aimodotis_id) {
         Aimodotis aimodotis = aimodotisRepository.findById(aimodotis_id).get();
-        if (userRepository.findByEmail(aimodotis.getEmail()).isPresent()) {
-            User user = userRepository.findByEmail(aimodotis.getEmail()).get();
+        String email = (String) aimodotis.getEmail();
+        AppForm appForm = appFormRepository.findByAimodotis(aimodotis).get();
+        if (userRepository.findByEmail(email).isPresent() && appForm.getStatus().equals(AppForm.Status.ACCEPTED)) {
+            User user = userRepository.findByEmail(email).get();
             Set<Role> roles = user.getRoles();
             roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
             user.setRoles(roles);
             userRepository.save(user);
             return ResponseEntity.ok("You are now a Blood Donator!");
-        }
+       }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User not found!");
     }
 }

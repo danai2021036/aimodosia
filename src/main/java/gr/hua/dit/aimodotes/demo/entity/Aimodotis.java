@@ -22,7 +22,6 @@ public class Aimodotis {
     private String lname;
 
     @Column
-    @Email
     private String email;
 
     @Column
