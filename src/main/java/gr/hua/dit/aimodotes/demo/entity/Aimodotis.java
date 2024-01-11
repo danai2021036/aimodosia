@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -47,10 +46,6 @@ public class Aimodotis {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="app_form_id")
     private AppForm appForm;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="blood_test_id")
-    private BloodTest bloodTest;
 
     @JsonIgnore
     @ManyToMany(cascade = {//CascadeType.DETACH,
@@ -162,6 +157,7 @@ public class Aimodotis {
         this.appForm = appForm;
     }
 
+
     @Override
     public String toString() {
         return "Aimodotis{" +
@@ -176,7 +172,6 @@ public class Aimodotis {
                 ", age=" + age +
                 ", location='" + location + '\'' +
                 ", appForm=" + appForm +
-                ", bloodTest=" + bloodTest +
                 ", donationRequests=" + donationRequests +
                 '}';
     }

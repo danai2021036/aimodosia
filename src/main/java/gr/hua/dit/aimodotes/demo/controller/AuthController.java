@@ -65,6 +65,27 @@ public class AuthController {
             roleRepository.save(new Role("ROLE_AIMODOTIS"));
             return null;
         });
+
+
+        this.userRepository.findByEmail("admin@gmail.com").orElseGet(() -> {
+            User user = new User("admin","admin@gmail.com", encoder.encode("1234"));
+            Set<Role> roles = new HashSet<>();
+            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
+            roles.add(this.roleRepository.findByName("ROLE_ADMIN").orElseThrow());
+            user.setRoles(roles);
+            userRepository.save(user);
+            return null;
+        });
+
+        this.userRepository.findByEmail("sec@gmail.com").orElseGet(() -> {
+            User user = new User("sec","sec@gmail.com", encoder.encode("1234"));
+            Set<Role> roles = new HashSet<>();
+            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
+            roles.add(this.roleRepository.findByName("ROLE_SECRETARY").orElseThrow());
+            user.setRoles(roles);
+            userRepository.save(user);
+            return null;
+        });
     }
 
     @PostMapping("/signin")

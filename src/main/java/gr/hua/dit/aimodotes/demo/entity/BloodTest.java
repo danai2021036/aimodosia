@@ -1,8 +1,10 @@
 package gr.hua.dit.aimodotes.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 @Entity
 public class BloodTest {
 
@@ -12,25 +14,18 @@ public class BloodTest {
     private Integer id;
 
     @Column
-    private Date date;
+    private LocalDate date;
 
     @Column
     private String bloodtype;
     @Column
     private String details;
 
-    //anapodh sxesh DB??????????????????????????????????????????????
+
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="aimodotis_id")
-    private Aimodotis aimodotis;
-
-    public Aimodotis getAimodotis() {
-        return aimodotis;
-    }
-
-    public void setAimodotis(Aimodotis aimodotis) {
-        this.aimodotis = aimodotis;
-    }
+    @JoinColumn(name="appform_id")
+    private AppForm appForm;
 
     public Integer getId() {
         return id;
@@ -40,11 +35,11 @@ public class BloodTest {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -64,7 +59,15 @@ public class BloodTest {
         this.bloodtype = bloodtype;
     }
 
-    public BloodTest(Date date, String details, Aimodotis aimodotis, String bloodtype) {
+    public AppForm getAppForm() {
+        return appForm;
+    }
+
+    public void setAppForm(AppForm appForm) {
+        this.appForm = appForm;
+    }
+
+    public BloodTest(LocalDate date, String details, Aimodotis aimodotis, String bloodtype) {
         this.date = date;
         this.details = details;
         this.bloodtype = bloodtype;

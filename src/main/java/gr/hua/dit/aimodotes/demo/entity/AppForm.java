@@ -3,7 +3,7 @@ package gr.hua.dit.aimodotes.demo.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Entity
 public class AppForm {
@@ -20,11 +20,11 @@ public class AppForm {
     @Column
     private LocalDate appDate;
 
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="blood_test_id")
     private BloodTest bloodTest;
 
-    //anapodi sxesh sto DB ???????????????????????????????????????????????????
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="aimodotis_id")
     private Aimodotis aimodotis;
@@ -62,6 +62,14 @@ public class AppForm {
 
     public void setAppDate(LocalDate appDate) {
         this.appDate = appDate;
+    }
+
+    public BloodTest getBloodTest() {
+        return bloodTest;
+    }
+
+    public void setBloodTest(BloodTest bloodTest) {
+        this.bloodTest = bloodTest;
     }
 
     public AppForm(Integer id, Status status, LocalDate appDate) {

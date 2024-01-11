@@ -1,6 +1,5 @@
 package gr.hua.dit.aimodotes.demo.dao;
 
-import gr.hua.dit.aimodotes.demo.entity.Aimodotis;
 import gr.hua.dit.aimodotes.demo.entity.Secretary;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

@@ -1,17 +1,12 @@
 package gr.hua.dit.aimodotes.demo.rest;
 
 import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
-import org.springframework.core.annotation.MergedAnnotations;
-import org.springframework.http.ResponseEntity;
-import gr.hua.dit.aimodotes.demo.entity.Aimodotis;
 import gr.hua.dit.aimodotes.demo.entity.DonationRequest;
-import gr.hua.dit.aimodotes.demo.payload.response.MessageResponse;
 import gr.hua.dit.aimodotes.demo.repository.DonationRequestRepository;
 import gr.hua.dit.aimodotes.demo.service.DonationRequestService;
-import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -26,8 +21,6 @@ public class DonationRequestRestController {
     @Autowired
     private DonationRequestService donationRequestService;
 
-    @Autowired
-    private AimodotisDAO aimodotisDAO;
 
     @PostConstruct
     public void setup() {
@@ -38,30 +31,33 @@ public class DonationRequestRestController {
     }
 
     @GetMapping("")
+    @Secured({"ROLE_ADMIN","ROLE_SECRETARY"})
     public List<DonationRequest> getDonationRequests(){
         return donationRequestService.getDonationRequests();
     }
 
     @PostMapping("/new")
+    @Secured("ROLE_SECRETARY")
     public DonationRequest saveDonationRequest(@RequestBody DonationRequest donationRequest){
         if(donationRequestRepository.findByLocationAndDate(donationRequest.getLocation(),donationRequest.getDate()).isPresent()){
             System.out.println("Donation Request already exists.");
             return null;
         }else {
             donationRequestService.saveDonationRequest(donationRequest);
-            //searchAimodotesForRequest(donationRequest);
             return donationRequest;
         }
     }
 
     //delete
     @DeleteMapping("/delete/{donation_request_id}")
+    @Secured("ROLE_SECRETARY")
     public void deleteDonationRequest(@PathVariable Integer donation_request_id){
         donationRequestService.deleteDonationRequest(donation_request_id);
     }
 
     //enan
     @GetMapping("{donation_request_id}")
+    @Secured("ROLE_SECRETARY")
     public DonationRequest getDonationRequest(@PathVariable Integer donation_request_id){
         return donationRequestService.getDonationRequest(donation_request_id);
     }
