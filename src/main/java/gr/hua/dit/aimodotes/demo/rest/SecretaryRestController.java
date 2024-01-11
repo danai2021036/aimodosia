@@ -9,6 +9,7 @@ import gr.hua.dit.aimodotes.demo.repository.SecretaryRepository;
 import gr.hua.dit.aimodotes.demo.repository.UserRepository;
 import gr.hua.dit.aimodotes.demo.service.AppFormService;
 import gr.hua.dit.aimodotes.demo.service.BloodTestService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +30,10 @@ public class SecretaryRestController {
     @Autowired
     private AppFormService appFormService;
 
-
 //    @PostConstruct
 //    public void setup() {
 //        secretaryRepository.findByAFM("123456789").orElseGet(() -> {
-//            secretaryRepository.save(new Secretary("Maria", "Papa","123456789"));
+//            secretaryRepository.save(new Secretary("Maria", "Papa","123456789", "sec@gmail.gr"));
 //            return null;
 //        });
 //    }
@@ -116,14 +116,15 @@ public class SecretaryRestController {
         return pendingAppForms;
     }
 
-    @PostMapping("/appform/pending/{appform_id}/accept")
+    @PostMapping("/{secretary_id}/appform/pending/{appform_id}/accept")
     @Secured("ROLE_SECRETARY")
-    public ResponseEntity<String> acceptAppForm(@PathVariable Integer appform_id){
+    public ResponseEntity<String> acceptAppForm(@PathVariable Integer secretary_id,@PathVariable Integer appform_id){
         try{
             AppForm appForm = appFormService.getAppForm(appform_id);
             Aimodotis aimodotis = appForm.getAimodotis();
 
             appForm.setStatus(AppForm.Status.ACCEPTED);
+            appForm.setSecretary(secretaryRepository.findById(secretary_id).get());
             appFormService.saveAppForm(appForm, aimodotis.getId());
             return ResponseEntity.ok("Application accepted! Waiting for confirmation of contact details!");
         }catch(Exception e){

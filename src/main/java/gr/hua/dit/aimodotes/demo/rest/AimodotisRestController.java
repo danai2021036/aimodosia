@@ -2,12 +2,11 @@ package gr.hua.dit.aimodotes.demo.rest;
 
 import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
 import gr.hua.dit.aimodotes.demo.entity.*;
-import gr.hua.dit.aimodotes.demo.repository.AimodotisRepository;
-import gr.hua.dit.aimodotes.demo.repository.RoleRepository;
-import gr.hua.dit.aimodotes.demo.repository.UserRepository;
+import gr.hua.dit.aimodotes.demo.repository.*;
 import gr.hua.dit.aimodotes.demo.service.AppFormService;
 import gr.hua.dit.aimodotes.demo.service.BloodTestService;
 import gr.hua.dit.aimodotes.demo.service.DonationRequestService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,21 +39,64 @@ public class AimodotisRestController {
     @Autowired
     private RoleRepository roleRepository;
 
-//    @PostConstruct
-//    public void setup() {
-//        aimodotisRepository.findByAMKA("15110301262").orElseGet(() -> {
-//            aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@hua.gr", "6985762160", "15110301262", 'F', null, 20, "Athens"));
-//            return null;
-//        });
-//        aimodotisRepository.findByAMKA("25110301550").orElseGet(() -> {
-//            aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@hua.gr", "6980763944", "25110301550", 'M', null, 20, "Athens"));
-//            return null;
-//        });
-//        aimodotisRepository.findByAMKA("13456789068").orElseGet(() -> {
-//            aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@hua.gr", "6935546778", "13456789068", 'F', null, 20, "Patra"));
-//            return null;
-//        });
-//    }
+    @Autowired
+    private AppFormRepository appFormRepository;
+
+    @Autowired
+    private BloodTestRepository bloodTestRepository;
+
+    @Autowired
+    private SecretaryRepository secretaryRepository;
+
+    @PostConstruct
+    public void setup() {
+        secretaryRepository.findByAFM("123456789").orElseGet(() -> {
+            secretaryRepository.save(new Secretary("Maria", "Papa","123456789", "sec@gmail.gr"));
+            return null;
+        });
+        aimodotisRepository.findByAMKA("05110301111").orElseGet(() -> {
+            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@gmail.gr", "6985762160", "05110301111", 'F', LocalDate.parse("2024-01-11"), 20, "Athens"));
+            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-01-10")));
+            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-11-25"), "details","0+"));
+            appForm.setAimodotis(aimodotis);
+            appForm.setBloodTest(bloodTest);
+            appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
+            aimodotis.setAppForm(appForm);
+            bloodTest.setAppForm(appForm);
+            bloodTestRepository.save(bloodTest);
+            aimodotisDAO.saveAimodotis(aimodotis);
+            appFormRepository.save(appForm);
+            return null;
+        });
+        aimodotisRepository.findByAMKA("25110301550").orElseGet(() -> {
+            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@gmail.gr", "6980763944", "25110301550", 'M', LocalDate.parse("2023-12-01"), 20, "Athens"));
+            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-11-28")));
+            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-10-30"), "details","A+"));
+            appForm.setAimodotis(aimodotis);
+            appForm.setBloodTest(bloodTest);
+            appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
+            aimodotis.setAppForm(appForm);
+            bloodTest.setAppForm(appForm);
+            bloodTestRepository.save(bloodTest);
+            aimodotisDAO.saveAimodotis(aimodotis);
+            appFormRepository.save(appForm);
+            return null;
+        });
+        aimodotisRepository.findByAMKA("13456789068").orElseGet(() -> {
+            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@gmail.gr", "6935546778", "13456789068", 'F', null, 20, "Patra"));
+            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.PENDING,LocalDate.parse("2024-01-11")));
+            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-12-22"), "details","B+"));
+            appForm.setAimodotis(aimodotis);
+            appForm.setBloodTest(bloodTest);
+            appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
+            aimodotis.setAppForm(appForm);
+            bloodTest.setAppForm(appForm);
+            bloodTestRepository.save(bloodTest);
+            aimodotisDAO.saveAimodotis(aimodotis);
+            appFormRepository.save(appForm);
+            return null;
+        });
+    }
 
 
     @GetMapping("")

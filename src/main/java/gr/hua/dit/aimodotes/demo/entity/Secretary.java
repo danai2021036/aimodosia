@@ -2,6 +2,7 @@ package gr.hua.dit.aimodotes.demo.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Email;
 
 import java.util.List;
 
@@ -21,6 +22,10 @@ public class Secretary {
 
     @Column
     private String AFM;
+
+    @Column
+    @Email
+    private String email;
 
     public String getAFM() {
         return AFM;
@@ -46,6 +51,14 @@ public class Secretary {
         this.lname = lname;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @OneToMany(mappedBy = "secretary", cascade = {//CascadeType.DETACH,
             CascadeType.REFRESH,
             //CascadeType.PERSIST,
@@ -66,10 +79,11 @@ public class Secretary {
         this.id = id;
     }
 
-    public Secretary(String fname, String lname, String AFM) {
+    public Secretary(String fname, String lname, String AFM, String email) {
         this.fname = fname;
         this.lname = lname;
         this.AFM = AFM;
+        this.email = email;
     }
 
     public Secretary() {

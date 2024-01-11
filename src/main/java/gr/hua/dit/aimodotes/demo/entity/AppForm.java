@@ -72,8 +72,15 @@ public class AppForm {
         this.bloodTest = bloodTest;
     }
 
-    public AppForm(Integer id, Status status, LocalDate appDate) {
-        this.id = id;
+    public Secretary getSecretary() {
+        return secretary;
+    }
+
+    public void setSecretary(Secretary secretary) {
+        this.secretary = secretary;
+    }
+
+    public AppForm(Status status, LocalDate appDate) {
         this.status = status;
         this.appDate = appDate;
     }

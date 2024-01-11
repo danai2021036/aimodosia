@@ -78,9 +78,12 @@ public class DonationRequest {
         this.aimodotes.add(aimodotis);
     }
 
-    public void removeAimodotis(Aimodotis aimodotis) {
-        this.aimodotes.remove(aimodotis);
-        aimodotis.getDonationRequests().remove(this);
+    public Secretary getSecretary() {
+        return secretary;
+    }
+
+    public void setSecretary(Secretary secretary) {
+        this.secretary = secretary;
     }
 
     public DonationRequest(String location, LocalDate date) {

@@ -67,7 +67,7 @@ public class BloodTest {
         this.appForm = appForm;
     }
 
-    public BloodTest(LocalDate date, String details, Aimodotis aimodotis, String bloodtype) {
+    public BloodTest(LocalDate date, String details, String bloodtype) {
         this.date = date;
         this.details = details;
         this.bloodtype = bloodtype;

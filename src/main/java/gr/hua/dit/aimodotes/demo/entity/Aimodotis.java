@@ -2,6 +2,7 @@ package gr.hua.dit.aimodotes.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class Aimodotis {
     private String lname;
 
     @Column
+    @Email
     private String email;
 
     @Column

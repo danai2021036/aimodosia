@@ -7,6 +7,7 @@ import gr.hua.dit.aimodotes.demo.repository.AppFormRepository;
 import gr.hua.dit.aimodotes.demo.service.AppFormService;
 import gr.hua.dit.aimodotes.demo.service.BloodTestService;
 import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class AppFormRestController {
 
     @Autowired
     private BloodTestService bloodTestService;
+
 
     @PostMapping("/new")
     @Secured({"ROLE_ADMIN","ROLE_USER"})
