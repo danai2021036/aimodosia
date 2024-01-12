@@ -19,6 +19,7 @@ public class BloodTestService {
     @Autowired
     private  AppFormService appFormService;
 
+    //save blood test linked to the appform
     @Transactional
     public void saveBloodTest(BloodTest bloodTest, Integer appform_id){
         AppForm appForm = appFormService.getAppForm(appform_id);
@@ -26,15 +27,18 @@ public class BloodTestService {
         bloodTestRepository.save(bloodTest);
     }
 
+    //get all blood tests
     @Transactional
     public BloodTest getBloodTest(Integer appform_id){
         return bloodTestRepository.findByAppForm_Id(appform_id).get();
     }
 
+    //delete one blood test
     public void deleteBloodTest(Integer bloodtest_id){
         bloodTestRepository.deleteById(bloodtest_id);
     }
 
+    //get all blood tests
     @Transactional
     public List<BloodTest> getBloodTests(){
         return bloodTestRepository.findAll();

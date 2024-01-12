@@ -30,6 +30,7 @@ public class SecretaryRestController {
     @Autowired
     private AppFormService appFormService;
 
+    //for some reason it doesn't link this secretary with the user we created on the setup on the AuthController
 //    @PostConstruct
 //    public void setup() {
 //        secretaryRepository.findByAFM("123456789").orElseGet(() -> {
@@ -38,12 +39,15 @@ public class SecretaryRestController {
 //        });
 //    }
 
+
+    //admin can see all the secretaries
     @GetMapping("")
     @Secured("ROLE_ADMIN")
     public List<Secretary> getSecretaries(){
         return secretaryDAO.getSecretaries();
     }
 
+    //admin can save a new secretary
     @PostMapping("/new")
     @Secured("ROLE_ADMIN")
     public Secretary saveSecretary(@RequestBody Secretary secretary){
@@ -55,20 +59,21 @@ public class SecretaryRestController {
         }
     }
 
-    //delete
+    //admin can delete a secretary
     @DeleteMapping("/delete/{secretary_id}")
     @Secured("ROLE_ADMIN")
     public void deleteSecretary(@PathVariable Integer secretary_id){
         secretaryDAO.deleteSecretary(secretary_id);
     }
 
-    //enan
+    //admin can see one secretary
     @GetMapping("{secretary_id}")
     @Secured("ROLE_ADMIN")
     public Secretary getSecretary(@PathVariable Integer secretary_id){
         return secretaryDAO.getSecretary(secretary_id);
     }
 
+    //admin can update the info of a secretary
     @PutMapping("/update/{secretary_id}")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<Secretary> updateSecretary(@PathVariable Integer secretary_id, @RequestBody Secretary updatedSecretary) {
@@ -88,12 +93,14 @@ public class SecretaryRestController {
         }
     }
 
+    //secretary can see all the appforms
     @GetMapping("/appforms")
     @Secured("ROLE_SECRETARY")
     public List<AppForm> getAppForms(){
         return appFormService.getAppForms();
     }
 
+    //secretary can see one appform
     @GetMapping("/appform/{appform_id}")
     @Secured("ROLE_SECRETARY")
     public AppForm getAppForm(@PathVariable Integer appform_id){
@@ -101,7 +108,7 @@ public class SecretaryRestController {
     }
 
 
-    //list with appforms that are pending
+    //secretary can see the list with appforms that are pending
     @GetMapping("/appforms/pending")
     @Secured("ROLE_SECRETARY")
     @ResponseBody
@@ -116,6 +123,7 @@ public class SecretaryRestController {
         return pendingAppForms;
     }
 
+    //secretary can accept one appform awaiting for confirmation of contact info so he can get the blood donor's role
     @PostMapping("/{secretary_id}/appform/pending/{appform_id}/accept")
     @Secured("ROLE_SECRETARY")
     public ResponseEntity<String> acceptAppForm(@PathVariable Integer secretary_id,@PathVariable Integer appform_id){
@@ -132,6 +140,7 @@ public class SecretaryRestController {
         }
     }
 
+    //secretary can decline one appform
     @PostMapping("/appform/pending/{appform_id}/decline")
     @Secured("ROLE_SECRETARY")
     public ResponseEntity<String> declineAppForm(@PathVariable Integer appform_id){

@@ -14,6 +14,7 @@ public class SecretaryDAOImpl implements SecretaryDAO{
     @PersistenceContext
     private EntityManager entityManager;
 
+    //get all secretaries
     @Override
     @Transactional
     public List<Secretary> getSecretaries() {
@@ -21,11 +22,13 @@ public class SecretaryDAOImpl implements SecretaryDAO{
         return query.getResultList();
     }
 
+    //get one secretary
     @Override
     public Secretary getSecretary(Integer secretary_id) {
         return entityManager.find(Secretary.class,secretary_id);
     }
 
+    //save one secretary
     @Override
     @Transactional
     public Secretary saveSecretary(Secretary secretary) {
@@ -38,6 +41,7 @@ public class SecretaryDAOImpl implements SecretaryDAO{
         return secretary;
     }
 
+    //delete one secretary
     @Override
     @Transactional
     public void deleteSecretary(Integer secretary_id) {

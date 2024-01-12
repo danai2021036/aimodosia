@@ -10,11 +10,14 @@ import java.util.List;
 
 @Entity
 public class Aimodotis {
+
+    //primary key
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Integer id;
 
+    //attributes/columns
     @Column
     private String fname;
 
@@ -43,6 +46,7 @@ public class Aimodotis {
     @Column
     private String location;
 
+    //entity relationships
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="app_form_id")
@@ -61,6 +65,7 @@ public class Aimodotis {
     )
     private List<DonationRequest> donationRequests;
 
+    //setters-getters
     public List<DonationRequest> getDonationRequests() {
         return donationRequests;
     }
@@ -177,6 +182,7 @@ public class Aimodotis {
                 '}';
     }
 
+    //constructors
     public Aimodotis(String fname, String lname, String email, String phone, String AMKA, Character sex, LocalDate last_donation, Integer age, String location) {
         this.fname = fname;
         this.lname = lname;

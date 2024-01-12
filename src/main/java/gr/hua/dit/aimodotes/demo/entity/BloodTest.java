@@ -8,11 +8,13 @@ import java.time.LocalDate;
 @Entity
 public class BloodTest {
 
+    //primary key
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Integer id;
 
+    //attributes/columns
     @Column
     private LocalDate date;
 
@@ -21,12 +23,13 @@ public class BloodTest {
     @Column
     private String details;
 
-
+    //entity relationships
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="appform_id")
     private AppForm appForm;
 
+    //setters-getters
     public Integer getId() {
         return id;
     }
@@ -67,6 +70,7 @@ public class BloodTest {
         this.appForm = appForm;
     }
 
+    //constructors
     public BloodTest(LocalDate date, String details, String bloodtype) {
         this.date = date;
         this.details = details;

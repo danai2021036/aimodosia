@@ -15,6 +15,7 @@ public class AimodotesDAOImpl implements AimodotisDAO{
     @PersistenceContext
     private EntityManager entityManager;
 
+    //get all blood donors
     @Override
     @Transactional
     public List<Aimodotis> getAimodotes() {
@@ -22,11 +23,13 @@ public class AimodotesDAOImpl implements AimodotisDAO{
         return query.getResultList();
     }
 
+    //get one blood donor
     @Override
     public Aimodotis getAimodotis(Integer aimodotis_id) {
         return entityManager.find(Aimodotis.class,aimodotis_id);
     }
 
+    //save blood donor
     @Override
     @Transactional
     public Aimodotis saveAimodotis(Aimodotis aimodotis) {
@@ -39,6 +42,7 @@ public class AimodotesDAOImpl implements AimodotisDAO{
         return aimodotis;
     }
 
+    //delete one blood donor
     @Override
     @Transactional
     public void deleteAimodotis(Integer aimodotis_id) {

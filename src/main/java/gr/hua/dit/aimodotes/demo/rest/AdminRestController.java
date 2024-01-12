@@ -26,19 +26,21 @@ public class AdminRestController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-
-    @GetMapping("/users")
+    //admin can see all the users' details
+    @GetMapping("")
     @Secured("ROLE_ADMIN")
     public List<User> getUsers() {
         return userDetailsService.getUsers();
     }
 
-    @GetMapping("/users/{user_id}")
+    //admin can see one user's details
+    @GetMapping("{user_id}")
     @Secured("ROLE_ADMIN")
     public User getUser(@PathVariable Integer user_id) {
         return userDetailsService.getUser(user_id);
     }
 
+    //admin can add a role to the user
     @PostMapping("/addroles/{user_id}/{role_id}")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<String> addRole(@PathVariable Integer user_id, @PathVariable Integer role_id){
@@ -49,6 +51,7 @@ public class AdminRestController {
         return ResponseEntity.ok("Added Role");
     }
 
+    //admin can remove a role from a user
     @DeleteMapping("/deleteroles/{user_id}/{role_id}")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<String> deleteRole(@PathVariable Integer user_id, @PathVariable Integer role_id){

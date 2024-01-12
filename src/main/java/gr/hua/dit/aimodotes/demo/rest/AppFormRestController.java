@@ -33,7 +33,7 @@ public class AppFormRestController {
     @Autowired
     private BloodTestService bloodTestService;
 
-
+    //admin can save a new blood donor and user can fill a new appform including his blood test
     @PostMapping("/new")
     @Secured({"ROLE_ADMIN","ROLE_USER"})
     public ResponseEntity<String> saveAppform(@RequestBody AimodotisAndBloodtest aimodotisAndBloodtest){

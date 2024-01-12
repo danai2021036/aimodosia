@@ -19,6 +19,7 @@ public class AppFormService {
     @Autowired
     private AppFormRepository appFormRepository;
 
+    //save app form
     @Transactional
     public void saveAppForm(AppForm appForm,Integer aimodotis_id){
         Aimodotis aimodotis = aimodotisDAO.getAimodotis(aimodotis_id);
@@ -26,6 +27,7 @@ public class AppFormService {
         appFormRepository.save(appForm);
     }
 
+    //delete app form
     @Transactional
     public void deleteAppForm(Integer appform_id){
         AppForm appForm = appFormRepository.findById(appform_id)
@@ -33,10 +35,13 @@ public class AppFormService {
         appFormRepository.delete(appForm);
     }
 
+    //get all app forms
     @Transactional
     public List<AppForm> getAppForms(){
         return appFormRepository.findAll();
     }
+
+    //get one app form
     @Transactional
     public AppForm getAppForm(Integer appform_id){
         return appFormRepository.findById(appform_id).get();

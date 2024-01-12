@@ -9,11 +9,13 @@ import java.util.List;
 @Entity
 public class Secretary {
 
+    //primary key
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Integer id;
 
+    //attributes/columns
     @Column
     private String fname;
 
@@ -26,6 +28,7 @@ public class Secretary {
     @Column
     private String email;
 
+    //setters-getters
     public String getAFM() {
         return AFM;
     }
@@ -58,6 +61,7 @@ public class Secretary {
         this.email = email;
     }
 
+    //entity relationships
     @OneToMany(mappedBy = "secretary", cascade = {//CascadeType.DETACH,
             CascadeType.REFRESH,
             //CascadeType.PERSIST,
@@ -78,6 +82,7 @@ public class Secretary {
         this.id = id;
     }
 
+    //constructors
     public Secretary(String fname, String lname, String AFM, String email) {
         this.fname = fname;
         this.lname = lname;

@@ -46,7 +46,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-
+    //roles setup and creation of 1 admin, 1 secretary, 3 blood donors
     @PostConstruct
     public void setup() {
         roleRepository.findByName("ROLE_ADMIN").orElseGet(() -> {
@@ -118,6 +118,7 @@ public class AuthController {
         });
     }
 
+    //signin/authentication
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         System.out.println("authentication");
@@ -142,6 +143,7 @@ public class AuthController {
                 roles));
     }
 
+    //signup / create new user with the role of user only
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {

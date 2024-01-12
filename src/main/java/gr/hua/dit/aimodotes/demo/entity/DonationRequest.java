@@ -10,11 +10,13 @@ import java.util.List;
 @Entity
 public class DonationRequest {
 
+    //primary key
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Integer id;
 
+    //attributes/columns
     @Column
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDate date;
@@ -22,6 +24,7 @@ public class DonationRequest {
     @Column
     private String location;
 
+    //entity relationships
     @ManyToMany(cascade = {//CascadeType.DETACH,
             CascadeType.MERGE,
             //CascadeType.PERSIST,
@@ -41,7 +44,7 @@ public class DonationRequest {
     @JoinColumn(name = "secretary_id")
     private Secretary secretary;
 
-
+    //setters-getters
     public LocalDate getDate() {
         return date;
     }
@@ -86,6 +89,7 @@ public class DonationRequest {
         this.secretary = secretary;
     }
 
+    //constructors
     public DonationRequest(String location, LocalDate date) {
         this.location = location;
         this.date = date;

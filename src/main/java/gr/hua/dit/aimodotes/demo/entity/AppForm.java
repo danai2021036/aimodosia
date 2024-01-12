@@ -8,11 +8,13 @@ import java.time.LocalDate;
 @Entity
 public class AppForm {
 
+    //primary key
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Integer id;
 
+    //attributes/columns
     public enum Status {ACCEPTED, PENDING};
     @Column
     private Status status;
@@ -20,7 +22,7 @@ public class AppForm {
     @Column
     private LocalDate appDate;
 
-
+    //entity relationships
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="blood_test_id")
     private BloodTest bloodTest;
@@ -36,6 +38,7 @@ public class AppForm {
     @JoinColumn(name = "secretary_id")
     private Secretary secretary;
 
+    //setters-getters
     public Aimodotis getAimodotis() {
         return aimodotis;
     }
@@ -80,6 +83,7 @@ public class AppForm {
         this.secretary = secretary;
     }
 
+    //constructors
     public AppForm(Status status, LocalDate appDate) {
         this.status = status;
         this.appDate = appDate;

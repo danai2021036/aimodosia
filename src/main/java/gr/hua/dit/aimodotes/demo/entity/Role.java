@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "roles")
 public class Role {
 
+    //primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -13,10 +14,12 @@ public class Role {
     @Column(length = 20)
     private String name;
 
+    //constructor
     public Role() {
 
     }
 
+    //setters-getters
     public Role(String name) {
         this.name = name;
     }

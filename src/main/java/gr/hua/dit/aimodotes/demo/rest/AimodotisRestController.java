@@ -48,6 +48,7 @@ public class AimodotisRestController {
     @Autowired
     private SecretaryRepository secretaryRepository;
 
+    //setup blood donors
     @PostConstruct
     public void setup() {
         secretaryRepository.findByAFM("123456789").orElseGet(() -> {
@@ -98,13 +99,14 @@ public class AimodotisRestController {
         });
     }
 
-
+    //admin and secretary can see all the blood donors
     @GetMapping("")
     @Secured({"ROLE_ADMIN","ROLE_SECRETARY"})
     public List<Aimodotis> getAimodotes(){
         return aimodotisDAO.getAimodotes();
     }
 
+    //admin can save one blood donor
     @PostMapping("/new")
     @Secured("ROLE_ADMIN")
     public Aimodotis saveAimodotis(@RequestBody Aimodotis aimodotis){
@@ -116,7 +118,7 @@ public class AimodotisRestController {
         }
     }
 
-    //delete
+    //admin can delete one blood donor
     @DeleteMapping("/delete/{aimodotis_id}")
     @Secured("ROLE_ADMIN")
     public void deleteAimodotis(@PathVariable Integer aimodotis_id){
@@ -127,7 +129,7 @@ public class AimodotisRestController {
 
     }
 
-    //enan
+    //admin and secretary can see one blood donor
     @GetMapping("{aimodotis_id}")
     @Secured({"ROLE_ADMIN","ROLE_SECRETARY"})
     public Aimodotis getAimodotis(@PathVariable Integer aimodotis_id) {
@@ -135,7 +137,7 @@ public class AimodotisRestController {
     }
 
 
-
+    //admin can update one blood donor's details
     @PutMapping("/update/{aimodotis_id}")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<Aimodotis> updateAimodotis(@PathVariable Integer aimodotis_id, @RequestBody Aimodotis updatedAimodotis) {
@@ -161,6 +163,7 @@ public class AimodotisRestController {
         }
     }
 
+    //blood donor can see all the available donation request where he follows the requirements
     @GetMapping("/donationrequests/{aimodotis_id}")
     @ResponseBody
     @Secured("ROLE_AIMODOTIS")
@@ -170,14 +173,14 @@ public class AimodotisRestController {
         List<DonationRequest> availableDonationRequests = new ArrayList<>();
         for (int i=0; i<donationRequests.size(); i++){
             if (checkDateLastDon(aimodotis,donationRequests.get(i)) && aimodotis.getLocation().equals(donationRequests.get(i).getLocation())){
-               availableDonationRequests.add(donationRequests.get(i));
+                availableDonationRequests.add(donationRequests.get(i));
             }
         }
         System.out.println(availableDonationRequests);
         return availableDonationRequests;
     }
 
-    //eleghos last aimodosias
+    //a method that checks if you can participate in a blood donation based on the last time you participated in one
     public boolean checkDateLastDon(Aimodotis aimodotis, DonationRequest donationRequest) {
         LocalDate lastDonDate = aimodotis.getLast_donation();
         LocalDate donReqDate = donationRequest.getDate();
@@ -201,19 +204,21 @@ public class AimodotisRestController {
         return true;
     }
 
+    //blood donor can accept a blood donation request and his last donation date gets updated
     @PostMapping("/donationrequests/{aimodotis_id}/{donation_request_id}/accept")
     @Secured("ROLE_AIMODOTIS")
     public void acceptRequest(@PathVariable Integer aimodotis_id, @PathVariable Integer donation_request_id) {
         Aimodotis aimodotis = aimodotisDAO.getAimodotis(aimodotis_id);
         DonationRequest donationRequest = donationRequestService.getDonationRequest(donation_request_id);
 
-            //edit aimdotis last donation date
-            aimodotis.setLast_donation(donationRequest.getDate());
-            updateAimodotis(aimodotis_id,aimodotis);
-            donationRequest.addAimodotis(aimodotis);
-            donationRequestService.saveDonationRequest(donationRequest);
+        //edit aimdotis last donation date
+        aimodotis.setLast_donation(donationRequest.getDate());
+        updateAimodotis(aimodotis_id,aimodotis);
+        donationRequest.addAimodotis(aimodotis);
+        donationRequestService.saveDonationRequest(donationRequest);
     }
 
+    //blood donor can confirm his contact info after they have accepted his application and he gets the blood donors role and he is able to participate in blood donations
     @PostMapping("/confirmcontactinfo/{aimodotis_id}")
     @Secured("ROLE_USER")
     public ResponseEntity<String> confirmContactInfo(@PathVariable Integer aimodotis_id) {
@@ -227,7 +232,7 @@ public class AimodotisRestController {
             user.setRoles(roles);
             userRepository.save(user);
             return ResponseEntity.ok("You are now a Blood Donator!");
-       }
+        }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User not found!");
     }
 }

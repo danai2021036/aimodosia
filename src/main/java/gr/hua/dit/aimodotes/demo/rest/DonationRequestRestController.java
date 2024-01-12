@@ -25,6 +25,7 @@ public class DonationRequestRestController {
     @Autowired
     private SecretaryRepository secretaryRepository;
 
+    //setup donation requests
     @PostConstruct
     public void setup() {
         donationRequestRepository.findByLocationAndDate("Athens",LocalDate.parse("2024-04-05")).orElseGet(() -> {
@@ -41,12 +42,14 @@ public class DonationRequestRestController {
         });
     }
 
+    //admin and secretary can see all the donation requests
     @GetMapping("")
     @Secured({"ROLE_ADMIN","ROLE_SECRETARY"})
     public List<DonationRequest> getDonationRequests(){
         return donationRequestService.getDonationRequests();
     }
 
+    //secretary can create a new donation request based on the location and the date
     @PostMapping("/{secretary_id}/new")
     @Secured("ROLE_SECRETARY")
     public DonationRequest saveDonationRequest(@PathVariable Integer secretary_id, @RequestBody DonationRequest donationRequest){
@@ -60,14 +63,14 @@ public class DonationRequestRestController {
         }
     }
 
-    //delete
+    //secretary can delete one donation request
     @DeleteMapping("/delete/{donation_request_id}")
     @Secured("ROLE_SECRETARY")
     public void deleteDonationRequest(@PathVariable Integer donation_request_id){
         donationRequestService.deleteDonationRequest(donation_request_id);
     }
 
-    //enan
+    //secretary can see one donation request
     @GetMapping("{donation_request_id}")
     @Secured("ROLE_SECRETARY")
     public DonationRequest getDonationRequest(@PathVariable Integer donation_request_id){
