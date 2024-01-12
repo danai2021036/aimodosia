@@ -27,13 +27,13 @@ public class AdminRestController {
     private UserDetailsServiceImpl userDetailsService;
 
 
-    @GetMapping("")
+    @GetMapping("/users")
     @Secured("ROLE_ADMIN")
     public List<User> getUsers() {
         return userDetailsService.getUsers();
     }
 
-    @GetMapping("{user_id}")
+    @GetMapping("/users/{user_id}")
     @Secured("ROLE_ADMIN")
     public User getUser(@PathVariable Integer user_id) {
         return userDetailsService.getUser(user_id);
