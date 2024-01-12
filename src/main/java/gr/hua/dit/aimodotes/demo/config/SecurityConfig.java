@@ -32,6 +32,7 @@ public class SecurityConfig {
     }
 
 
+    //we have used annotation @Secured for our security. We dont have a specific pattern to use .requestMatchers()
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
