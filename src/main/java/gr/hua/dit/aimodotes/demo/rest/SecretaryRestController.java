@@ -73,9 +73,9 @@ public class SecretaryRestController {
         return secretaryDAO.getSecretary(secretary_id);
     }
 
-    //admin can update the info of a secretary
+    //secretary can update their info
     @PutMapping("/update/{secretary_id}")
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_SECRETARY")
     public ResponseEntity<Secretary> updateSecretary(@PathVariable Integer secretary_id, @RequestBody Secretary updatedSecretary) {
         Optional<Secretary> existingSecretaryOptional = secretaryRepository.findById(secretary_id);
 

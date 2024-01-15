@@ -106,28 +106,6 @@ public class AimodotisRestController {
         return aimodotisDAO.getAimodotes();
     }
 
-    //admin can save one blood donor
-    @PostMapping("/new")
-    @Secured("ROLE_ADMIN")
-    public Aimodotis saveAimodotis(@RequestBody Aimodotis aimodotis){
-        if(aimodotisRepository.findByAMKA(aimodotis.getAMKA()).isPresent()){
-            System.out.println("Aimodotis already exists.");
-            return null;
-        }else {
-            return aimodotisDAO.saveAimodotis(aimodotis);
-        }
-    }
-
-    //admin can delete one blood donor
-    @DeleteMapping("/delete/{aimodotis_id}")
-    @Secured("ROLE_ADMIN")
-    public void deleteAimodotis(@PathVariable Integer aimodotis_id){
-        Aimodotis aimodotis = aimodotisDAO.getAimodotis(aimodotis_id);
-        AppForm appForm = aimodotis.getAppForm();
-        appFormService.deleteAppForm(appForm.getId());
-        aimodotisDAO.deleteAimodotis(aimodotis_id);
-
-    }
 
     //admin and secretary can see one blood donor
     @GetMapping("{aimodotis_id}")
@@ -137,9 +115,9 @@ public class AimodotisRestController {
     }
 
 
-    //admin can update one blood donor's details
+    //blood donor can update his details
     @PutMapping("/update/{aimodotis_id}")
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_AIMODOTIS")
     public ResponseEntity<Aimodotis> updateAimodotis(@PathVariable Integer aimodotis_id, @RequestBody Aimodotis updatedAimodotis) {
         Optional<Aimodotis> existingAimodotisOptional = aimodotisRepository.findById(aimodotis_id);
 
