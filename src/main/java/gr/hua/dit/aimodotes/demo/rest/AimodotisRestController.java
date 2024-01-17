@@ -58,7 +58,7 @@ public class AimodotisRestController {
         aimodotisRepository.findByAMKA("05110301111").orElseGet(() -> {
             Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@gmail.gr", "6985762160", "05110301111", 'F', LocalDate.parse("2024-01-11"), 20, "Athens"));
             AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-01-10")));
-            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-11-25"), "details","0+"));
+            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2021-11-25"), "details","0+"));
             appForm.setAimodotis(aimodotis);
             appForm.setBloodTest(bloodTest);
             appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
@@ -159,7 +159,7 @@ public class AimodotisRestController {
     }
 
     //a method that checks if you can participate in a blood donation based on the last time you participated in one
-    public boolean checkDateLastDon(Aimodotis aimodotis, DonationRequest donationRequest) {
+    private boolean checkDateLastDon(Aimodotis aimodotis, DonationRequest donationRequest) {
         LocalDate lastDonDate = aimodotis.getLast_donation();
         LocalDate donReqDate = donationRequest.getDate();
 
@@ -185,16 +185,41 @@ public class AimodotisRestController {
     //blood donor can accept a blood donation request and his last donation date gets updated
     @PostMapping("/donationrequests/{aimodotis_id}/{donation_request_id}/accept")
     @Secured("ROLE_AIMODOTIS")
-    public void acceptRequest(@PathVariable Integer aimodotis_id, @PathVariable Integer donation_request_id) {
+    public ResponseEntity<String> acceptRequest(@PathVariable Integer aimodotis_id, @PathVariable Integer donation_request_id) {
         Aimodotis aimodotis = aimodotisDAO.getAimodotis(aimodotis_id);
         DonationRequest donationRequest = donationRequestService.getDonationRequest(donation_request_id);
+        AppForm appForm = appFormRepository.findByAimodotis(aimodotis).get();
+        BloodTest bloodTest = bloodTestRepository.findByAppForm_Id(appForm.getId()).get();
 
-        //edit aimdotis last donation date
-        aimodotis.setLast_donation(donationRequest.getDate());
-        updateAimodotis(aimodotis_id,aimodotis);
-        donationRequest.addAimodotis(aimodotis);
-        donationRequestService.saveDonationRequest(donationRequest);
+
+        if (checkBloodTest(bloodTest,donationRequest)) {
+            //edit aimdotis last donation date
+            aimodotis.setLast_donation(donationRequest.getDate());
+            updateAimodotis(aimodotis_id, aimodotis);
+            donationRequest.addAimodotis(aimodotis);
+            donationRequestService.saveDonationRequest(donationRequest);
+            return ResponseEntity.ok("Donation Request accepted!");
+        }else{
+            return ResponseEntity.badRequest().body("Your Blood Test is out of date");
+        }
     }
+
+
+    private boolean checkBloodTest(BloodTest bloodTest, DonationRequest donationRequest){
+        LocalDate bloodTestDate = bloodTest.getDate();
+        LocalDate donReqDate = donationRequest.getDate();
+
+        Period period = Period.between(bloodTestDate, donReqDate);
+        int diffyears = period.getYears();
+        int diffmonths = period.getMonths();
+        if (diffyears > 1 || (diffyears == 1 && diffmonths>0) || bloodTestDate.isBefore(LocalDate.now())){
+            System.out.println("decline" + diffmonths + diffyears);
+            return false;
+        }
+        System.out.println("accept" + diffmonths + diffyears);
+        return true;
+    }
+
 
     //blood donor can confirm his contact info after they have accepted his application and he gets the blood donors role and he is able to participate in blood donations
     @PostMapping("/confirmcontactinfo/{aimodotis_id}")
