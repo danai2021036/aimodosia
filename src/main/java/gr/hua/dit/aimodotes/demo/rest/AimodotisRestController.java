@@ -101,7 +101,7 @@ public class AimodotisRestController {
 
     //admin and secretary can see all the blood donors
     @GetMapping("")
-    @Secured({"ROLE_ADMIN","ROLE_SECRETARY"})
+   // @Secured({"ROLE_ADMIN","ROLE_SECRETARY"})
     public List<Aimodotis> getAimodotes(){
         return aimodotisDAO.getAimodotes();
     }
