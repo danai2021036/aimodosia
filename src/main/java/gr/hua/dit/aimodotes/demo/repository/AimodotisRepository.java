@@ -8,8 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-//@RepositoryRestResource(path= "aimodotis")
-@Repository
+@RepositoryRestResource(path= "aimodotis")
 //@Hidden
 public interface AimodotisRepository extends JpaRepository<Aimodotis, Integer> {
     Optional<Aimodotis> findByAMKA(String AMKA);

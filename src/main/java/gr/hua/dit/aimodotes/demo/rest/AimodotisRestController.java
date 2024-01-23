@@ -18,7 +18,7 @@ import java.time.Period;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/aimodotes")
+@RequestMapping("/aimodotis")
 public class AimodotisRestController {
 
     @Autowired
@@ -101,7 +101,7 @@ public class AimodotisRestController {
 
     //admin and secretary can see all the blood donors
     @GetMapping("")
-   // @Secured({"ROLE_ADMIN","ROLE_SECRETARY"})
+    @Secured({"ROLE_ADMIN","ROLE_SECRETARY"})
     public List<Aimodotis> getAimodotes(){
         return aimodotisDAO.getAimodotes();
     }

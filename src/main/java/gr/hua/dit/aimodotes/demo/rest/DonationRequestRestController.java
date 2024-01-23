@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/donationrequest")
+@RequestMapping("/donationrequest")
 public class DonationRequestRestController {
     @Autowired
     private DonationRequestRepository donationRequestRepository;

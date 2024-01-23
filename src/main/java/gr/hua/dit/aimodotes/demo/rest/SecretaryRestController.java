@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/secretary")
+@RequestMapping("/secretary")
 public class SecretaryRestController {
     @Autowired
     private SecretaryRepository secretaryRepository;
@@ -124,7 +124,7 @@ public class SecretaryRestController {
     }
 
     //secretary can accept one appform awaiting for confirmation of contact info so he can get the blood donor's role
-    @PostMapping("/{secretary_id}/appform/pending/{appform_id}/accept")
+    @PostMapping("/appform/pending/{appform_id}/accept")
     @Secured("ROLE_SECRETARY")
     public ResponseEntity<String> acceptAppForm(@PathVariable Integer secretary_id,@PathVariable Integer appform_id){
         try{
@@ -132,7 +132,7 @@ public class SecretaryRestController {
             Aimodotis aimodotis = appForm.getAimodotis();
 
             appForm.setStatus(AppForm.Status.ACCEPTED);
-            appForm.setSecretary(secretaryRepository.findById(secretary_id).get());
+           // appForm.setSecretary(secretaryRepository.findById(secretary_id).get());
             appFormService.saveAppForm(appForm, aimodotis.getId());
             return ResponseEntity.ok("Application accepted! Waiting for confirmation of contact details!");
         }catch(Exception e){

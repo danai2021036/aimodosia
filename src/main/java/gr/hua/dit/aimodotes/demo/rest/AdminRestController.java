@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 public class AdminRestController {
 
     @Autowired
@@ -34,14 +34,14 @@ public class AdminRestController {
     BCryptPasswordEncoder encoder;
 
     //admin can see all the users' details
-    @GetMapping("")
+    @GetMapping("/users")
     @Secured("ROLE_ADMIN")
     public List<User> getUsers() {
         return userDetailsService.getUsers();
     }
 
     //admin can see one user's details
-    @GetMapping("{user_id}")
+    @GetMapping("/users/{user_id}")
     @Secured("ROLE_ADMIN")
     public User getUser(@PathVariable Integer user_id) {
         return userDetailsService.getUser(user_id);
