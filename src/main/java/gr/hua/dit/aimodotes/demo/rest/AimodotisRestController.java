@@ -101,7 +101,7 @@ public class AimodotisRestController {
 
     //admin and secretary can see all the blood donors
     @GetMapping("")
-    @Secured({"ROLE_ADMIN","ROLE_SECRETARY"})
+    @Secured({"ROLE_ADMIN","ROLE_SECRETARY","ROLE_USER"})
     public List<Aimodotis> getAimodotes(){
         return aimodotisDAO.getAimodotes();
     }
@@ -224,18 +224,21 @@ public class AimodotisRestController {
     //blood donor can confirm his contact info after they have accepted his application and he gets the blood donors role and he is able to participate in blood donations
     @PostMapping("/confirmcontactinfo/{aimodotis_id}")
     @Secured("ROLE_USER")
-    public ResponseEntity<String> confirmContactInfo(@PathVariable Integer aimodotis_id) {
+    public ResponseEntity<Map<String,String>> confirmContactInfo(@PathVariable Integer aimodotis_id) {
         Aimodotis aimodotis = aimodotisRepository.findById(aimodotis_id).get();
         String email = (String) aimodotis.getEmail();
         AppForm appForm = appFormRepository.findByAimodotis(aimodotis).get();
+        Map<String,String> response = new HashMap<>();
         if (userRepository.findByEmail(email).isPresent() && appForm.getStatus().equals(AppForm.Status.ACCEPTED)) {
             User user = userRepository.findByEmail(email).get();
             Set<Role> roles = user.getRoles();
             roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
             user.setRoles(roles);
             userRepository.save(user);
-            return ResponseEntity.ok("You are now a Blood Donator!");
+            response.put("message","You are now a Blood Donator!");
+            return ResponseEntity.ok(response);
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User not found!");
+        response.put("error", "User not found!");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }

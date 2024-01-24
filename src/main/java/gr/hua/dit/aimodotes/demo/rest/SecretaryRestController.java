@@ -126,29 +126,32 @@ public class SecretaryRestController {
     //secretary can accept one appform awaiting for confirmation of contact info so he can get the blood donor's role
     @PostMapping("/appform/pending/{appform_id}/accept")
     @Secured("ROLE_SECRETARY")
-    public ResponseEntity<String> acceptAppForm(@PathVariable Integer secretary_id,@PathVariable Integer appform_id){
-        try{
+    public AppForm acceptAppForm(@PathVariable Integer appform_id){
+        //try{
             AppForm appForm = appFormService.getAppForm(appform_id);
             Aimodotis aimodotis = appForm.getAimodotis();
 
             appForm.setStatus(AppForm.Status.ACCEPTED);
-           // appForm.setSecretary(secretaryRepository.findById(secretary_id).get());
             appFormService.saveAppForm(appForm, aimodotis.getId());
-            return ResponseEntity.ok("Application accepted! Waiting for confirmation of contact details!");
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error accepting applicaton!");
-        }
+            return appForm;
+            //return ResponseEntity.ok("Application accepted! Waiting for confirmation of contact details!");
+//        }catch(Exception e){
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error accepting applicaton!");
+//        }
     }
 
     //secretary can decline one appform
     @PostMapping("/appform/pending/{appform_id}/decline")
     @Secured("ROLE_SECRETARY")
-    public ResponseEntity<String> declineAppForm(@PathVariable Integer appform_id){
+    public ResponseEntity<Map<String,String>> declineAppForm(@PathVariable Integer appform_id){
+        Map<String,String> response = new HashMap<>();
         try{
             appFormService.deleteAppForm(appform_id);
-            return ResponseEntity.ok("Application Form declined and Blood Donator deleted!");
+            response.put("message", "Application Form declined and Blood Donator deleted!");
+            return ResponseEntity.ok(response);
         }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error declining applicaton!");
+            response.put("error", "Error declining application!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
