@@ -11,4 +11,5 @@ import java.util.Optional;
 @Hidden
 public interface SecretaryRepository extends JpaRepository<Secretary, Integer> {
     Optional<Secretary> findByAFM(String AFM);
+    Optional<Secretary> findByEmail(String email);
 }

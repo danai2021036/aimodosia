@@ -6,6 +6,7 @@ import gr.hua.dit.aimodotes.demo.repository.*;
 import gr.hua.dit.aimodotes.demo.service.AppFormService;
 import gr.hua.dit.aimodotes.demo.service.BloodTestService;
 import gr.hua.dit.aimodotes.demo.service.DonationRequestService;
+import gr.hua.dit.aimodotes.demo.service.UserDetailsServiceImpl;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,15 +49,18 @@ public class AimodotisRestController {
     @Autowired
     private SecretaryRepository secretaryRepository;
 
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
     //setup blood donors
     @PostConstruct
     public void setup() {
         secretaryRepository.findByAFM("123456789").orElseGet(() -> {
-            secretaryRepository.save(new Secretary("Maria", "Papa","123456789", "sec@gmail.gr"));
+            secretaryRepository.save(new Secretary("Maria", "Papa","123456789", "sec@gmail.com"));
             return null;
         });
         aimodotisRepository.findByAMKA("05110301111").orElseGet(() -> {
-            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@gmail.gr", "6985762160", "05110301111", 'F', LocalDate.parse("2024-01-11"), 20, "Athens"));
+            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@gmail.com", "6985762160", "05110301111", 'F', LocalDate.parse("2024-01-11"), 20, "Athens"));
             AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-01-10")));
             BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2021-11-25"), "details","0+"));
             appForm.setAimodotis(aimodotis);
@@ -70,7 +74,7 @@ public class AimodotisRestController {
             return null;
         });
         aimodotisRepository.findByAMKA("25110301550").orElseGet(() -> {
-            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@gmail.gr", "6980763944", "25110301550", 'M', LocalDate.parse("2023-12-01"), 20, "Athens"));
+            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@gmail.com", "6980763944", "25110301550", 'M', LocalDate.parse("2023-12-01"), 20, "Athens"));
             AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-11-28")));
             BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-10-30"), "details","A+"));
             appForm.setAimodotis(aimodotis);
@@ -84,8 +88,8 @@ public class AimodotisRestController {
             return null;
         });
         aimodotisRepository.findByAMKA("13456789068").orElseGet(() -> {
-            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@gmail.gr", "6935546778", "13456789068", 'F', null, 20, "Patra"));
-            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.PENDING,LocalDate.parse("2024-01-09")));
+            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@gmail.com", "6935546778", "13456789068", 'F', null, 20, "Patra"));
+            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-01-09")));
             BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-12-22"), "details","B+"));
             appForm.setAimodotis(aimodotis);
             appForm.setBloodTest(bloodTest);
@@ -142,28 +146,31 @@ public class AimodotisRestController {
     }
 
     //blood donor can see all the available donation request where he follows the requirements
-    @GetMapping("/donationrequests/{aimodotis_id}")
+    @GetMapping("/donationrequests/{user_id}")
     @ResponseBody
     @Secured("ROLE_AIMODOTIS")
-    public List<DonationRequest> getAvailableDonations(@PathVariable Integer aimodotis_id){
-        Aimodotis aimodotis = aimodotisDAO.getAimodotis(aimodotis_id);
-        List<DonationRequest> donationRequests = donationRequestService.getDonationRequests();
-        List<DonationRequest> availableDonationRequests = new ArrayList<>();
-        for (int i=0; i<donationRequests.size(); i++){
-            if (checkDateLastDon(aimodotis,donationRequests.get(i)) && aimodotis.getLocation().equals(donationRequests.get(i).getLocation())){
-                availableDonationRequests.add(donationRequests.get(i));
+    public List<DonationRequest> getAvailableDonations(@PathVariable Integer user_id){
+        User user = userDetailsService.getUser(user_id);
+        String email =user.getEmail();
+        Aimodotis aimodotis = aimodotisRepository.findByEmail(email).orElse(null);
+        if (aimodotis != null) {
+            List<DonationRequest> donationRequests = donationRequestService.getDonationRequests();
+            List<DonationRequest> availableDonationRequests = new ArrayList<>();
+            for (int i = 0; i < donationRequests.size(); i++) {
+                if (checkDateLastDon(aimodotis, donationRequests.get(i)) && aimodotis.getLocation().equals(donationRequests.get(i).getLocation())) {
+                    availableDonationRequests.add(donationRequests.get(i));
+                }
             }
+            System.out.println(availableDonationRequests);
+            return availableDonationRequests;
         }
-        System.out.println(availableDonationRequests);
-        return availableDonationRequests;
+        return null;
     }
 
     //a method that checks if you can participate in a blood donation based on the last time you participated in one
-    private boolean checkDateLastDon(Aimodotis aimodotis, DonationRequest donationRequest) {
+    public boolean checkDateLastDon(Aimodotis aimodotis, DonationRequest donationRequest) {
         LocalDate lastDonDate = aimodotis.getLast_donation();
         LocalDate donReqDate = donationRequest.getDate();
-
-
         if(lastDonDate==null) {
             if(donReqDate.isAfter(LocalDate.now())) {
                 System.out.println("accepted");
@@ -171,11 +178,10 @@ public class AimodotisRestController {
             }else{
                 return false;
             }
-
         }
-        Period period = Period.between(donReqDate, lastDonDate);
+        Period period = Period.between(lastDonDate,donReqDate);
         int diff = Math.abs(period.getMonths());
-        if ((diff < 3 || donReqDate.isBefore(lastDonDate)) && donReqDate.isBefore(LocalDate.now())) {
+        if ((diff < 3 || donReqDate.isBefore(lastDonDate)) || donReqDate.isBefore(LocalDate.now())) {
             System.out.println("declined");
             return false;
         }
@@ -183,25 +189,31 @@ public class AimodotisRestController {
     }
 
     //blood donor can accept a blood donation request and his last donation date gets updated
-    @PostMapping("/donationrequests/{aimodotis_id}/{donation_request_id}/accept")
+    @PostMapping("/donationrequests/{user_id}/{donation_request_id}/accept")
     @Secured("ROLE_AIMODOTIS")
-    public ResponseEntity<String> acceptRequest(@PathVariable Integer aimodotis_id, @PathVariable Integer donation_request_id) {
-        Aimodotis aimodotis = aimodotisDAO.getAimodotis(aimodotis_id);
+    public ResponseEntity<Map<String,String>> acceptRequest(@PathVariable Integer user_id, @PathVariable Integer donation_request_id) {
+        Map<String,String> response = new HashMap<>();
+        User user = userDetailsService.getUser(user_id);
+        String email =user.getEmail();
+        Aimodotis aimodotis = aimodotisRepository.findByEmail(email).orElse(null);
         DonationRequest donationRequest = donationRequestService.getDonationRequest(donation_request_id);
         AppForm appForm = appFormRepository.findByAimodotis(aimodotis).get();
         BloodTest bloodTest = bloodTestRepository.findByAppForm_Id(appForm.getId()).get();
-
-
-        if (checkBloodTest(bloodTest,donationRequest)) {
-            //edit aimdotis last donation date
-            aimodotis.setLast_donation(donationRequest.getDate());
-            updateAimodotis(aimodotis_id, aimodotis);
-            donationRequest.addAimodotis(aimodotis);
-            donationRequestService.saveDonationRequest(donationRequest);
-            return ResponseEntity.ok("Donation Request accepted!");
-        }else{
-            return ResponseEntity.badRequest().body("Your Blood Test is out of date");
+        if(aimodotis!=null){
+            if (checkBloodTest(bloodTest,donationRequest)) {
+                //edit aimdotis last donation date
+                aimodotis.setLast_donation(donationRequest.getDate());
+                updateAimodotis(aimodotis.getId(), aimodotis);
+                donationRequest.addAimodotis(aimodotis);
+                donationRequestService.saveDonationRequest(donationRequest);
+                response.put("message","Donation Request accepted!");
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("error","Your Blood Test is out of date");
+                return ResponseEntity.badRequest().body(response);
+            }
         }
+        return  null;
     }
 
 
@@ -212,11 +224,9 @@ public class AimodotisRestController {
         Period period = Period.between(bloodTestDate, donReqDate);
         int diffyears = period.getYears();
         int diffmonths = period.getMonths();
-        if (diffyears > 1 || (diffyears == 1 && diffmonths>0) || bloodTestDate.isBefore(LocalDate.now())){
-            System.out.println("decline" + diffmonths + diffyears);
+        if (diffyears > 1 || (diffyears == 1 && diffmonths>0)){
             return false;
         }
-        System.out.println("accept" + diffmonths + diffyears);
         return true;
     }
 

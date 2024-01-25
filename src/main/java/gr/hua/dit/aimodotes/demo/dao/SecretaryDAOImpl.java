@@ -32,7 +32,6 @@ public class SecretaryDAOImpl implements SecretaryDAO{
     @Override
     @Transactional
     public Secretary saveSecretary(Secretary secretary) {
-        System.out.println("Secretary "+ secretary.getId());
         if (secretary.getId() == null) {
             entityManager.persist(secretary);
         } else {

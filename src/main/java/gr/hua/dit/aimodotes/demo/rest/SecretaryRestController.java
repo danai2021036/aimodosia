@@ -30,14 +30,6 @@ public class SecretaryRestController {
     @Autowired
     private AppFormService appFormService;
 
-    //for some reason it doesn't link this secretary with the user we created on the setup on the AuthController
-//    @PostConstruct
-//    public void setup() {
-//        secretaryRepository.findByAFM("123456789").orElseGet(() -> {
-//            secretaryRepository.save(new Secretary("Maria", "Papa","123456789", "sec@gmail.gr"));
-//            return null;
-//        });
-//    }
 
 
     //admin can see all the secretaries
@@ -127,17 +119,12 @@ public class SecretaryRestController {
     @PostMapping("/appform/pending/{appform_id}/accept")
     @Secured("ROLE_SECRETARY")
     public AppForm acceptAppForm(@PathVariable Integer appform_id){
-        //try{
             AppForm appForm = appFormService.getAppForm(appform_id);
             Aimodotis aimodotis = appForm.getAimodotis();
 
             appForm.setStatus(AppForm.Status.ACCEPTED);
             appFormService.saveAppForm(appForm, aimodotis.getId());
             return appForm;
-            //return ResponseEntity.ok("Application accepted! Waiting for confirmation of contact details!");
-//        }catch(Exception e){
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error accepting applicaton!");
-//        }
     }
 
     //secretary can decline one appform

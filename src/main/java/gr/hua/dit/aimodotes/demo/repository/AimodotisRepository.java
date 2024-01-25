@@ -12,5 +12,6 @@ import java.util.Optional;
 //@Hidden
 public interface AimodotisRepository extends JpaRepository<Aimodotis, Integer> {
     Optional<Aimodotis> findByAMKA(String AMKA);
+    Optional<Aimodotis> findByEmail(String email);
 
 }

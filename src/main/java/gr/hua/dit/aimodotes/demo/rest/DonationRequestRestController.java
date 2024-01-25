@@ -2,9 +2,13 @@ package gr.hua.dit.aimodotes.demo.rest;
 
 import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
 import gr.hua.dit.aimodotes.demo.entity.DonationRequest;
+import gr.hua.dit.aimodotes.demo.entity.Secretary;
+import gr.hua.dit.aimodotes.demo.entity.User;
 import gr.hua.dit.aimodotes.demo.repository.DonationRequestRepository;
 import gr.hua.dit.aimodotes.demo.repository.SecretaryRepository;
+import gr.hua.dit.aimodotes.demo.repository.UserRepository;
 import gr.hua.dit.aimodotes.demo.service.DonationRequestService;
+import gr.hua.dit.aimodotes.demo.service.UserDetailsServiceImpl;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -24,6 +28,9 @@ public class DonationRequestRestController {
 
     @Autowired
     private SecretaryRepository secretaryRepository;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     //setup donation requests
     @PostConstruct
@@ -50,16 +57,22 @@ public class DonationRequestRestController {
     }
 
     //secretary can create a new donation request based on the location and the date
-    @PostMapping("/{secretary_id}/new")
+    @PostMapping("/{user_id}/new")
     @Secured("ROLE_SECRETARY")
-    public DonationRequest saveDonationRequest(@PathVariable Integer secretary_id, @RequestBody DonationRequest donationRequest){
+    public DonationRequest saveDonationRequest(@PathVariable Integer user_id, @RequestBody DonationRequest donationRequest){
         if(donationRequestRepository.findByLocationAndDate(donationRequest.getLocation(),donationRequest.getDate()).isPresent()){
             System.out.println("Donation Request already exists.");
             return null;
         }else {
-            donationRequest.setSecretary(secretaryRepository.findById(secretary_id).get());
-            donationRequestService.saveDonationRequest(donationRequest);
-            return donationRequest;
+            User user = userDetailsService.getUser(user_id);
+            String email = user.getEmail();
+            Secretary secretary = secretaryRepository.findByEmail(email).orElse(null);
+            if (secretary != null){
+                donationRequest.setSecretary(secretaryRepository.findById(secretary.getId()).get());
+                donationRequestService.saveDonationRequest(donationRequest);
+                return donationRequest;
+            }
+            return null;
         }
     }
 
