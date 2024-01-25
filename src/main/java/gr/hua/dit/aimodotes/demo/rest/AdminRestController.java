@@ -12,10 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -50,12 +47,14 @@ public class AdminRestController {
     //admin can add a role to the user
     @PostMapping("/addroles/{user_id}/{role_id}")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<String> addRole(@PathVariable Integer user_id, @PathVariable Integer role_id){
+    public ResponseEntity<Map<String,String>> addRole(@PathVariable Integer user_id, @PathVariable Integer role_id){
+        Map<String,String> response = new HashMap<>();
         User user = userDetailsService.getUser(user_id);
         Role role = roleRepository.findById(role_id).get();
         user.getRoles().add(role);
         userRepository.save(user);
-        return ResponseEntity.ok("Added Role");
+        response.put("message","Added Role");
+        return ResponseEntity.ok(response);
     }
 
 
