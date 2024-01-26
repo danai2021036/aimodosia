@@ -5,6 +5,7 @@ import gr.hua.dit.aimodotes.demo.entity.User;
 import gr.hua.dit.aimodotes.demo.payload.response.MessageResponse;
 import gr.hua.dit.aimodotes.demo.repository.RoleRepository;
 import gr.hua.dit.aimodotes.demo.repository.UserRepository;
+import gr.hua.dit.aimodotes.demo.service.RoleService;
 import gr.hua.dit.aimodotes.demo.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class AdminRestController {
     @Autowired
     BCryptPasswordEncoder encoder;
 
+    @Autowired
+    private RoleService roleService;
+
     //admin can see all the users' details
     @GetMapping("/users")
     @Secured("ROLE_ADMIN")
@@ -44,6 +48,13 @@ public class AdminRestController {
         return userDetailsService.getUser(user_id);
     }
 
+    //method to get roles
+    @GetMapping("/roles")
+    @Secured("ROLE_ADMIN")
+    public List<Role> getRoles() {
+        return roleService.getRoles();
+    }
+
     //admin can add a role to the user
     @PostMapping("/addroles/{user_id}/{role_id}")
     @Secured("ROLE_ADMIN")
@@ -51,6 +62,10 @@ public class AdminRestController {
         Map<String,String> response = new HashMap<>();
         User user = userDetailsService.getUser(user_id);
         Role role = roleRepository.findById(role_id).get();
+        if(user.getRoles().contains(role)){
+            response.put("error", "Role already exists");
+            return ResponseEntity.badRequest().body(response);
+        }
         user.getRoles().add(role);
         userRepository.save(user);
         response.put("message","Added Role");
@@ -61,13 +76,20 @@ public class AdminRestController {
     //admin can remove a role from a user
     @DeleteMapping("/deleteroles/{user_id}/{role_id}")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<String> deleteRole(@PathVariable Integer user_id, @PathVariable Integer role_id){
+    public ResponseEntity<Map<String,String>> deleteRole(@PathVariable Integer user_id, @PathVariable Integer role_id){
+        Map<String,String> response = new HashMap<>();
         User user = userRepository.findById(user_id).get();
         Set<Role> roles = user.getRoles();
-        roles.remove(this.roleRepository.findById(role_id).orElseThrow());
-        user.setRoles(roles);
-        userRepository.save(user);
-        return ResponseEntity.ok("Removed Role");
+        Role role = roleRepository.findById(role_id).get();
+        if(user.getRoles().contains(role)){
+            roles.remove(this.roleRepository.findById(role_id).orElseThrow());
+            user.setRoles(roles);
+            userRepository.save(user);
+            response.put("message","Removed Role");
+            return ResponseEntity.ok(response);
+        }
+        response.put("error", "Role does not exist, to be deleted");
+        return ResponseEntity.badRequest().body(response);
     }
 
     @PostMapping("/user/new")
@@ -87,25 +109,36 @@ public class AdminRestController {
         return ResponseEntity.ok("Added user!");
     }
 
-    @PutMapping("/user/update/{user_id}")
+    @PostMapping("/user/update/{user_id}")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<String> updateUser(@PathVariable Integer user_id, @RequestBody User updatedUser){
+    public ResponseEntity<Map<String,String>> updateUser(@PathVariable Integer user_id, @RequestBody User updatedUser){
+        Map<String,String> response = new HashMap<>();
         Optional<User> existingUserOptional = userRepository.findById(user_id);
+        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+updatedUser);
         if(existingUserOptional.isPresent()){
             User existingUser = existingUserOptional.get();
             existingUser.setUsername(updatedUser.getUsername());
             existingUser.setEmail(updatedUser.getEmail());
             userRepository.save(existingUser);
-            return ResponseEntity.ok("User updated!");
+            response.put("message","User updated!");
+            return ResponseEntity.ok(response);
         }else {
-            return ResponseEntity.notFound().build();
+            response.put("error","Error editing user!");
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
     @DeleteMapping("/user/delete/{user_id}")
     @Secured("ROLE_ADMIN")
-    public void deleteUser(@PathVariable Integer user_id){
+    public ResponseEntity<Map<String,String>> deleteUser(@PathVariable Integer user_id){
+        Map<String,String> response = new HashMap<>();
         User user = userRepository.findById(user_id).get();
-        userRepository.delete(user);
+        if(userRepository.findById(user_id).isPresent()){
+            userRepository.delete(user);
+            response.put("message","Deleted User");
+            return ResponseEntity.ok(response);
+        }
+        response.put("error","Unable to delete user!");
+        return ResponseEntity.badRequest().body(response);
     }
 }
