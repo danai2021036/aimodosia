@@ -120,28 +120,48 @@ public class AimodotisRestController {
 
 
     //blood donor can update his details
-    @PutMapping("/update/{aimodotis_id}")
+    @PostMapping("/update/{aimodotis_id}")
     @Secured("ROLE_AIMODOTIS")
-    public ResponseEntity<Aimodotis> updateAimodotis(@PathVariable Integer aimodotis_id, @RequestBody Aimodotis updatedAimodotis) {
+    public ResponseEntity<Map<String,String>> updateAimodotis(@PathVariable Integer aimodotis_id, @RequestBody Aimodotis updatedAimodotis) {
         Optional<Aimodotis> existingAimodotisOptional = aimodotisRepository.findById(aimodotis_id);
-
+        Map<String, String> response = new HashMap<>();
         if(existingAimodotisOptional.isPresent()) {
             Aimodotis existingAimodotis = existingAimodotisOptional.get();
-
+            if(updatedAimodotis.getFname().isBlank()){
+                updatedAimodotis.setFname(existingAimodotis.getFname());
+            }
+            if(updatedAimodotis.getLname().isBlank()){
+                updatedAimodotis.setLname(existingAimodotis.getLname());
+            }
+            if(updatedAimodotis.getPhone().isBlank()){
+                updatedAimodotis.setPhone(existingAimodotis.getPhone());
+            }
+            if(updatedAimodotis.getAMKA().isBlank()){
+                updatedAimodotis.setAMKA(existingAimodotis.getAMKA());
+            }
+            if(updatedAimodotis.getSex()==null){
+                updatedAimodotis.setSex(existingAimodotis.getSex());
+            }
+            if(updatedAimodotis.getAge()==null){
+                updatedAimodotis.setAge(existingAimodotis.getAge());
+            }
+            if(updatedAimodotis.getLocation().isBlank()){
+                updatedAimodotis.setLocation(existingAimodotis.getLocation());
+            }
             existingAimodotis.setFname(updatedAimodotis.getFname());
             existingAimodotis.setLname(updatedAimodotis.getLname());
-            existingAimodotis.setEmail(updatedAimodotis.getEmail());
             existingAimodotis.setPhone(updatedAimodotis.getPhone());
             existingAimodotis.setAMKA(updatedAimodotis.getAMKA());
             existingAimodotis.setSex(updatedAimodotis.getSex());
-            existingAimodotis.setLast_donation(updatedAimodotis.getLast_donation());
             existingAimodotis.setAge(updatedAimodotis.getAge());
             existingAimodotis.setLocation(updatedAimodotis.getLocation());
 
             Aimodotis savedAimodotis = aimodotisRepository.save(existingAimodotis);
-            return ResponseEntity.ok(savedAimodotis);
+            response.put("message", "Aimodotis Updated");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.notFound().build();
+            response.put("error", "Aimodotis not found");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

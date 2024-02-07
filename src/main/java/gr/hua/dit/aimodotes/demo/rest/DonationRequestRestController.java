@@ -77,6 +77,7 @@ public class DonationRequestRestController {
     }
 
     //secretary can delete one donation request
+    //OXI STO FRONTEND
     @DeleteMapping("/delete/{donation_request_id}")
     @Secured("ROLE_SECRETARY")
     public void deleteDonationRequest(@PathVariable Integer donation_request_id){

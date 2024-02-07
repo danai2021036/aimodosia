@@ -114,9 +114,14 @@ public class AdminRestController {
     public ResponseEntity<Map<String,String>> updateUser(@PathVariable Integer user_id, @RequestBody User updatedUser){
         Map<String,String> response = new HashMap<>();
         Optional<User> existingUserOptional = userRepository.findById(user_id);
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"+updatedUser);
         if(existingUserOptional.isPresent()){
             User existingUser = existingUserOptional.get();
+            if(updatedUser.getEmail().isBlank()){
+                updatedUser.setEmail(existingUser.getEmail());
+            }
+            if (updatedUser.getUsername().isBlank()){
+                updatedUser.setUsername(existingUser.getUsername());
+            }
             existingUser.setUsername(updatedUser.getUsername());
             existingUser.setEmail(updatedUser.getEmail());
             userRepository.save(existingUser);
