@@ -127,7 +127,7 @@ public class AdminRestController {
         user.setRoles(roles);
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
-        response.put("message", "Added user!");
+        response.put("success", "Added user!");
         return ResponseEntity.ok(response);
     }
 
