@@ -119,12 +119,12 @@ public class SecretaryRestController {
     @PostMapping("/appform/pending/{appform_id}/accept")
     @Secured("ROLE_SECRETARY")
     public AppForm acceptAppForm(@PathVariable Integer appform_id){
-            AppForm appForm = appFormService.getAppForm(appform_id);
-            Aimodotis aimodotis = appForm.getAimodotis();
+        AppForm appForm = appFormService.getAppForm(appform_id);
+        Aimodotis aimodotis = appForm.getAimodotis();
 
-            appForm.setStatus(AppForm.Status.ACCEPTED);
-            appFormService.saveAppForm(appForm, aimodotis.getId());
-            return appForm;
+        appForm.setStatus(AppForm.Status.ACCEPTED);
+        appFormService.saveAppForm(appForm, aimodotis.getId());
+        return appForm;
     }
 
     //secretary can decline one appform

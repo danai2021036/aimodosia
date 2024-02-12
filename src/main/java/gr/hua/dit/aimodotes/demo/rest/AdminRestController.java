@@ -1,9 +1,15 @@
 package gr.hua.dit.aimodotes.demo.rest;
 
+import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
+import gr.hua.dit.aimodotes.demo.dao.SecretaryDAO;
+import gr.hua.dit.aimodotes.demo.entity.Aimodotis;
 import gr.hua.dit.aimodotes.demo.entity.Role;
+import gr.hua.dit.aimodotes.demo.entity.Secretary;
 import gr.hua.dit.aimodotes.demo.entity.User;
 import gr.hua.dit.aimodotes.demo.payload.response.MessageResponse;
+import gr.hua.dit.aimodotes.demo.repository.AimodotisRepository;
 import gr.hua.dit.aimodotes.demo.repository.RoleRepository;
+import gr.hua.dit.aimodotes.demo.repository.SecretaryRepository;
 import gr.hua.dit.aimodotes.demo.repository.UserRepository;
 import gr.hua.dit.aimodotes.demo.service.RoleService;
 import gr.hua.dit.aimodotes.demo.service.UserDetailsServiceImpl;
@@ -26,7 +32,19 @@ public class AdminRestController {
     private RoleRepository roleRepository;
 
     @Autowired
+    private AimodotisRepository aimodotisRepository;
+
+    @Autowired
+    private SecretaryRepository secretaryRepository;
+
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private AimodotisDAO aimodotisDAO;
+
+    @Autowired
+    private SecretaryDAO secretaryDAO;
 
     @Autowired
     BCryptPasswordEncoder encoder;
@@ -94,19 +112,23 @@ public class AdminRestController {
 
     @PostMapping("/user/new")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<String> createNewUser(@RequestBody User user){
+    public ResponseEntity<Map<String, String>> createNewUser(@RequestBody User user){
+        Map<String,String> response = new HashMap<>();
         if (userRepository.existsByUsername(user.getUsername())) {
-            return ResponseEntity.badRequest().body("Error username already exists!");
+            response.put("error","Error username already exists!");
+            return ResponseEntity.badRequest().body(response);
         }
         if(userRepository.existsByEmail(user.getEmail())){
-            return ResponseEntity.badRequest().body("Error email is already in use!");
+            response.put("error","Error email is already in use!");
+            return ResponseEntity.badRequest().body(response);
         }
         Set<Role> roles = new HashSet<>();
         roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
         user.setRoles(roles);
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
-        return ResponseEntity.ok("Added user!");
+        response.put("message", "Added user!");
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/user/update/{user_id}")
@@ -114,8 +136,12 @@ public class AdminRestController {
     public ResponseEntity<Map<String,String>> updateUser(@PathVariable Integer user_id, @RequestBody User updatedUser){
         Map<String,String> response = new HashMap<>();
         Optional<User> existingUserOptional = userRepository.findById(user_id);
+        Role roleAimodotis = roleRepository.findByName("ROLE_AIMODOTIS").get();
+        Role roleSecretary = roleRepository.findByName("ROLE_SECRETARY").get();
+        String oldEmail;
         if(existingUserOptional.isPresent()){
             User existingUser = existingUserOptional.get();
+            oldEmail = existingUser.getEmail();
             if(updatedUser.getEmail().isBlank()){
                 updatedUser.setEmail(existingUser.getEmail());
             }
@@ -124,7 +150,26 @@ public class AdminRestController {
             }
             existingUser.setUsername(updatedUser.getUsername());
             existingUser.setEmail(updatedUser.getEmail());
+
             userRepository.save(existingUser);
+            if(existingUser.getRoles().contains(roleAimodotis)){
+                List<Aimodotis> aimodotes = aimodotisDAO.getAimodotes();
+                for (Aimodotis aimodotis : aimodotes) {
+                    if (aimodotis.getEmail().equals(oldEmail)) {
+                        aimodotis.setEmail(existingUser.getEmail());
+                        aimodotisRepository.save(aimodotis);
+                    }
+                }
+            }
+            if(existingUser.getRoles().contains(roleSecretary)){
+                List<Secretary> secretaries = secretaryDAO.getSecretaries();
+                for (Secretary secretary : secretaries) {
+                    if (secretary.getEmail().equals(oldEmail)) {
+                        secretary.setEmail(existingUser.getEmail());
+                        secretaryRepository.save(secretary);
+                    }
+                }
+            }
             response.put("message","User updated!");
             return ResponseEntity.ok(response);
         }else {
@@ -138,7 +183,27 @@ public class AdminRestController {
     public ResponseEntity<Map<String,String>> deleteUser(@PathVariable Integer user_id){
         Map<String,String> response = new HashMap<>();
         User user = userRepository.findById(user_id).get();
+        Role roleAimodotis = roleRepository.findByName("ROLE_AIMODOTIS").get();
+        Role roleSecretary = roleRepository.findByName("ROLE_SECRETARY").get();
+        String userEmail = user.getEmail();
         if(userRepository.findById(user_id).isPresent()){
+
+            if(user.getRoles().contains(roleAimodotis)){
+                List<Aimodotis> aimodotes = aimodotisDAO.getAimodotes();
+                for (Aimodotis aimodotis : aimodotes) {
+                    if (aimodotis.getEmail().equals(userEmail)) {
+                        aimodotisDAO.deleteAimodotis(aimodotis.getId());
+                    }
+                }
+            }
+            if(user.getRoles().contains(roleSecretary)){
+                List<Secretary> secretaries = secretaryDAO.getSecretaries();
+                for (Secretary secretary : secretaries) {
+                    if (secretary.getEmail().equals(userEmail)) {
+                        secretaryDAO.deleteSecretary(secretary.getId());
+                    }
+                }
+            }
             userRepository.delete(user);
             response.put("message","Deleted User");
             return ResponseEntity.ok(response);
