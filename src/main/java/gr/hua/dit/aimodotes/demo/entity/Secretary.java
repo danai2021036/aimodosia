@@ -64,18 +64,18 @@ public class Secretary {
     public List<AppForm> getAppForms() {
         return appForms;
     }
-
-    public void setAppForms(List<AppForm> appForms) {
-        this.appForms = appForms;
-    }
+//
+//    public void setAppForms(List<AppForm> appForms) {
+//        this.appForms = appForms;
+//    }
 
     public List<DonationRequest> getDonationRequests() {
         return donationRequests;
     }
 
-    public void setDonationRequests(List<DonationRequest> donationRequests) {
-        this.donationRequests = donationRequests;
-    }
+//    public void setDonationRequests(List<DonationRequest> donationRequests) {
+//        this.donationRequests = donationRequests;
+//    }
 
     //entity relationships
     @OneToMany(mappedBy = "secretary", cascade = {//CascadeType.DETACH,

@@ -1,6 +1,5 @@
 package gr.hua.dit.aimodotes.demo.service;
 
-import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
 import gr.hua.dit.aimodotes.demo.entity.AppForm;
 import gr.hua.dit.aimodotes.demo.entity.BloodTest;
 import gr.hua.dit.aimodotes.demo.repository.BloodTestRepository;

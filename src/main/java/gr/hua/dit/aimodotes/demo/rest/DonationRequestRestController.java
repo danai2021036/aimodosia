@@ -1,12 +1,10 @@
 package gr.hua.dit.aimodotes.demo.rest;
 
-import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
 import gr.hua.dit.aimodotes.demo.entity.DonationRequest;
 import gr.hua.dit.aimodotes.demo.entity.Secretary;
 import gr.hua.dit.aimodotes.demo.entity.User;
 import gr.hua.dit.aimodotes.demo.repository.DonationRequestRepository;
 import gr.hua.dit.aimodotes.demo.repository.SecretaryRepository;
-import gr.hua.dit.aimodotes.demo.repository.UserRepository;
 import gr.hua.dit.aimodotes.demo.service.DonationRequestService;
 import gr.hua.dit.aimodotes.demo.service.UserDetailsServiceImpl;
 import jakarta.annotation.PostConstruct;
@@ -77,8 +75,6 @@ public class DonationRequestRestController {
             if (secretary != null) {
                 donationRequest.setSecretary(secretaryRepository.findById(secretary.getId()).get());
                 donationRequestService.saveDonationRequest(donationRequest);
-//                response.put("message", "Created New Donation Request");
-//                return ResponseEntity.ok(response);
             }
         }
         response.put("success", "Created New Donation Request");

@@ -1,6 +1,5 @@
 package gr.hua.dit.aimodotes.demo.service;
 
-import gr.hua.dit.aimodotes.demo.entity.AppForm;
 import gr.hua.dit.aimodotes.demo.entity.Role;
 import gr.hua.dit.aimodotes.demo.repository.RoleRepository;
 import jakarta.transaction.Transactional;

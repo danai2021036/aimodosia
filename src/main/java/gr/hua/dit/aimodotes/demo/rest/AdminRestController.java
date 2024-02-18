@@ -196,14 +196,6 @@ public class AdminRestController {
                     }
                 }
             }
-            if(user.getRoles().contains(roleSecretary)){
-                List<Secretary> secretaries = secretaryDAO.getSecretaries();
-                for (Secretary secretary : secretaries) {
-                    if (secretary.getEmail().equals(userEmail)) {
-                        secretaryDAO.deleteSecretary(secretary.getId());
-                    }
-                }
-            }
             userRepository.delete(user);
             response.put("message","Deleted User");
             return ResponseEntity.ok(response);

@@ -1,15 +1,9 @@
 package gr.hua.dit.aimodotes.demo.rest;
 
-import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
 import gr.hua.dit.aimodotes.demo.dao.SecretaryDAO;
 import gr.hua.dit.aimodotes.demo.entity.*;
-import gr.hua.dit.aimodotes.demo.repository.AimodotisRepository;
-import gr.hua.dit.aimodotes.demo.repository.RoleRepository;
 import gr.hua.dit.aimodotes.demo.repository.SecretaryRepository;
-import gr.hua.dit.aimodotes.demo.repository.UserRepository;
 import gr.hua.dit.aimodotes.demo.service.AppFormService;
-import gr.hua.dit.aimodotes.demo.service.BloodTestService;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
