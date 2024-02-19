@@ -61,17 +61,17 @@ public class Secretary {
         this.email = email;
     }
 
-    public List<AppForm> getAppForms() {
-        return appForms;
-    }
+//    public List<AppForm> getAppForms() {
+//        return appForms;
+//    }
 //
 //    public void setAppForms(List<AppForm> appForms) {
 //        this.appForms = appForms;
 //    }
 
-    public List<DonationRequest> getDonationRequests() {
-        return donationRequests;
-    }
+//    public List<DonationRequest> getDonationRequests() {
+//        return donationRequests;
+//    }
 
 //    public void setDonationRequests(List<DonationRequest> donationRequests) {
 //        this.donationRequests = donationRequests;
