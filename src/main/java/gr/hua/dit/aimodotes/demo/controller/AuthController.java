@@ -47,76 +47,76 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     //roles setup and creation of 1 admin, 1 secretary, 3 blood donors
-    @PostConstruct
-    public void setup() {
-        roleRepository.findByName("ROLE_ADMIN").orElseGet(() -> {
-            roleRepository.save(new Role("ROLE_ADMIN"));
-            return null;
-        });
-        roleRepository.findByName("ROLE_USER").orElseGet(() -> {
-            roleRepository.save(new Role("ROLE_USER"));
-            return null;
-        });
-        roleRepository.findByName("ROLE_SECRETARY").orElseGet(() -> {
-            roleRepository.save(new Role("ROLE_SECRETARY"));
-            return null;
-        });
-        roleRepository.findByName("ROLE_AIMODOTIS").orElseGet(() -> {
-            roleRepository.save(new Role("ROLE_AIMODOTIS"));
-            return null;
-        });
-
-
-        this.userRepository.findByEmail("admin@gmail.com").orElseGet(() -> {
-            User user = new User("admin","admin@gmail.com", encoder.encode("1234"));
-            Set<Role> roles = new HashSet<>();
-            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
-            roles.add(this.roleRepository.findByName("ROLE_ADMIN").orElseThrow());
-            user.setRoles(roles);
-            userRepository.save(user);
-            return null;
-        });
-
-        this.userRepository.findByEmail("sec@gmail.com").orElseGet(() -> {
-            User user = new User("sec","sec@gmail.com", encoder.encode("1234"));
-            Set<Role> roles = new HashSet<>();
-            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
-            roles.add(this.roleRepository.findByName("ROLE_SECRETARY").orElseThrow());
-            user.setRoles(roles);
-            userRepository.save(user);
-            return null;
-        });
-
-        this.userRepository.findByEmail("naf@gmail.com").orElseGet(() -> {
-            User user = new User("naf","naf@gmail.com", encoder.encode("1234"));
-            Set<Role> roles = new HashSet<>();
-            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
-            roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
-            user.setRoles(roles);
-            userRepository.save(user);
-            return null;
-        });
-
-        this.userRepository.findByEmail("geo@gmail.com").orElseGet(() -> {
-            User user = new User("geo","geo@gmail.com", encoder.encode("1234"));
-            Set<Role> roles = new HashSet<>();
-            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
-            roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
-            user.setRoles(roles);
-            userRepository.save(user);
-            return null;
-        });
-
-        this.userRepository.findByEmail("dan@gmail.com").orElseGet(() -> {
-            User user = new User("dan","dan@gmail.com", encoder.encode("1234"));
-            Set<Role> roles = new HashSet<>();
-            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
-            roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
-            user.setRoles(roles);
-            userRepository.save(user);
-            return null;
-        });
-    }
+//    @PostConstruct
+//    public void setup() {
+//        roleRepository.findByName("ROLE_ADMIN").orElseGet(() -> {
+//            roleRepository.save(new Role("ROLE_ADMIN"));
+//            return null;
+//        });
+//        roleRepository.findByName("ROLE_USER").orElseGet(() -> {
+//            roleRepository.save(new Role("ROLE_USER"));
+//            return null;
+//        });
+//        roleRepository.findByName("ROLE_SECRETARY").orElseGet(() -> {
+//            roleRepository.save(new Role("ROLE_SECRETARY"));
+//            return null;
+//        });
+//        roleRepository.findByName("ROLE_AIMODOTIS").orElseGet(() -> {
+//            roleRepository.save(new Role("ROLE_AIMODOTIS"));
+//            return null;
+//        });
+//
+//
+//        this.userRepository.findByEmail("admin@gmail.com").orElseGet(() -> {
+//            User user = new User("admin","admin@gmail.com", encoder.encode("1234"));
+//            Set<Role> roles = new HashSet<>();
+//            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
+//            roles.add(this.roleRepository.findByName("ROLE_ADMIN").orElseThrow());
+//            user.setRoles(roles);
+//            userRepository.save(user);
+//            return null;
+//        });
+//
+//        this.userRepository.findByEmail("sec@gmail.com").orElseGet(() -> {
+//            User user = new User("sec","sec@gmail.com", encoder.encode("1234"));
+//            Set<Role> roles = new HashSet<>();
+//            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
+//            roles.add(this.roleRepository.findByName("ROLE_SECRETARY").orElseThrow());
+//            user.setRoles(roles);
+//            userRepository.save(user);
+//            return null;
+//        });
+//
+//        this.userRepository.findByEmail("naf@gmail.com").orElseGet(() -> {
+//            User user = new User("naf","naf@gmail.com", encoder.encode("1234"));
+//            Set<Role> roles = new HashSet<>();
+//            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
+//            roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
+//            user.setRoles(roles);
+//            userRepository.save(user);
+//            return null;
+//        });
+//
+//        this.userRepository.findByEmail("geo@gmail.com").orElseGet(() -> {
+//            User user = new User("geo","geo@gmail.com", encoder.encode("1234"));
+//            Set<Role> roles = new HashSet<>();
+//            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
+//            roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
+//            user.setRoles(roles);
+//            userRepository.save(user);
+//            return null;
+//        });
+//
+//        this.userRepository.findByEmail("dan@gmail.com").orElseGet(() -> {
+//            User user = new User("dan","dan@gmail.com", encoder.encode("1234"));
+//            Set<Role> roles = new HashSet<>();
+//            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
+//            roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
+//            user.setRoles(roles);
+//            userRepository.save(user);
+//            return null;
+//        });
+//    }
 
     //signin/authentication
     @PostMapping("/signin")
