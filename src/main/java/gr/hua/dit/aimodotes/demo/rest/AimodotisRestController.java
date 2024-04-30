@@ -53,55 +53,55 @@ public class AimodotisRestController {
     private UserDetailsServiceImpl userDetailsService;
 
     //setup blood donors
-    @PostConstruct
-    public void setup() {
-        secretaryRepository.findByAFM("123456789").orElseGet(() -> {
-            secretaryRepository.save(new Secretary("Maria", "Papa","123456789", "sec@gmail.com"));
-            return null;
-        });
-        aimodotisRepository.findByAMKA("05110301111").orElseGet(() -> {
-            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@gmail.com", "6985762160", "05110301111", 'F', LocalDate.parse("2024-01-11"), 20, "Athens"));
-            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-01-10")));
-            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2021-11-25"), "White Blood Cell Count (WBC): 7.2 x10^3/µL\n Red Blood Cell Count (RBC): 5.0 x10^6/µL\n Hemoglobin (HGB): 15.5 g/dL\n Hematocrit (HCT): 45%\n Platelet Count: 250 x10^3/µL","0+"));
-            appForm.setAimodotis(aimodotis);
-            appForm.setBloodTest(bloodTest);
-            appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
-            aimodotis.setAppForm(appForm);
-            bloodTest.setAppForm(appForm);
-            bloodTestRepository.save(bloodTest);
-            aimodotisDAO.saveAimodotis(aimodotis);
-            appFormRepository.save(appForm);
-            return null;
-        });
-        aimodotisRepository.findByAMKA("25110301550").orElseGet(() -> {
-            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@gmail.com", "6980763944", "25110301550", 'M', LocalDate.parse("2023-12-01"), 20, "Athens"));
-            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-11-28")));
-            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-10-30"), "White Blood Cell Count (WBC): 7.2 x10^3/µL\n Red Blood Cell Count (RBC): 5.0 x10^6/µL\n Hemoglobin (HGB): 15.5 g/dL\n Hematocrit (HCT): 45%\n Platelet Count: 250 x10^3/µL","A+"));
-            appForm.setAimodotis(aimodotis);
-            appForm.setBloodTest(bloodTest);
-            appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
-            aimodotis.setAppForm(appForm);
-            bloodTest.setAppForm(appForm);
-            bloodTestRepository.save(bloodTest);
-            aimodotisDAO.saveAimodotis(aimodotis);
-            appFormRepository.save(appForm);
-            return null;
-        });
-        aimodotisRepository.findByAMKA("13456789068").orElseGet(() -> {
-            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@gmail.com", "6935546778", "13456789068", 'F', null, 20, "Patra"));
-            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-01-09")));
-            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-12-22"), "White Blood Cell Count (WBC): 7.2 x10^3/µL\n Red Blood Cell Count (RBC): 5.0 x10^6/µL\n Hemoglobin (HGB): 15.5 g/dL\n Hematocrit (HCT): 45%\n Platelet Count: 250 x10^3/µL","B+"));
-            appForm.setAimodotis(aimodotis);
-            appForm.setBloodTest(bloodTest);
-            appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
-            aimodotis.setAppForm(appForm);
-            bloodTest.setAppForm(appForm);
-            bloodTestRepository.save(bloodTest);
-            aimodotisDAO.saveAimodotis(aimodotis);
-            appFormRepository.save(appForm);
-            return null;
-        });
-    }
+//    @PostConstruct
+//    public void setup() {
+//        secretaryRepository.findByAFM("123456789").orElseGet(() -> {
+//            secretaryRepository.save(new Secretary("Maria", "Papa","123456789", "sec@gmail.com"));
+//            return null;
+//        });
+//        aimodotisRepository.findByAMKA("05110301111").orElseGet(() -> {
+//            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@gmail.com", "6985762160", "05110301111", 'F', LocalDate.parse("2024-01-11"), 20, "Athens"));
+//            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-01-10")));
+//            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2021-11-25"), "White Blood Cell Count (WBC): 7.2 x10^3/µL\n Red Blood Cell Count (RBC): 5.0 x10^6/µL\n Hemoglobin (HGB): 15.5 g/dL\n Hematocrit (HCT): 45%\n Platelet Count: 250 x10^3/µL","0+"));
+//            appForm.setAimodotis(aimodotis);
+//            appForm.setBloodTest(bloodTest);
+//            appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
+//            aimodotis.setAppForm(appForm);
+//            bloodTest.setAppForm(appForm);
+//            bloodTestRepository.save(bloodTest);
+//            aimodotisDAO.saveAimodotis(aimodotis);
+//            appFormRepository.save(appForm);
+//            return null;
+//        });
+//        aimodotisRepository.findByAMKA("25110301550").orElseGet(() -> {
+//            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Giwrgos", "Gkolfinopoulos", "geo@gmail.com", "6980763944", "25110301550", 'M', LocalDate.parse("2023-12-01"), 20, "Athens"));
+//            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-11-28")));
+//            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-10-30"), "White Blood Cell Count (WBC): 7.2 x10^3/µL\n Red Blood Cell Count (RBC): 5.0 x10^6/µL\n Hemoglobin (HGB): 15.5 g/dL\n Hematocrit (HCT): 45%\n Platelet Count: 250 x10^3/µL","A+"));
+//            appForm.setAimodotis(aimodotis);
+//            appForm.setBloodTest(bloodTest);
+//            appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
+//            aimodotis.setAppForm(appForm);
+//            bloodTest.setAppForm(appForm);
+//            bloodTestRepository.save(bloodTest);
+//            aimodotisDAO.saveAimodotis(aimodotis);
+//            appFormRepository.save(appForm);
+//            return null;
+//        });
+//        aimodotisRepository.findByAMKA("13456789068").orElseGet(() -> {
+//            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Danai", "Kamperou", "dan@gmail.com", "6935546778", "13456789068", 'F', null, 20, "Patra"));
+//            AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-01-09")));
+//            BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2023-12-22"), "White Blood Cell Count (WBC): 7.2 x10^3/µL\n Red Blood Cell Count (RBC): 5.0 x10^6/µL\n Hemoglobin (HGB): 15.5 g/dL\n Hematocrit (HCT): 45%\n Platelet Count: 250 x10^3/µL","B+"));
+//            appForm.setAimodotis(aimodotis);
+//            appForm.setBloodTest(bloodTest);
+//            appForm.setSecretary(secretaryRepository.findByAFM("123456789").get());
+//            aimodotis.setAppForm(appForm);
+//            bloodTest.setAppForm(appForm);
+//            bloodTestRepository.save(bloodTest);
+//            aimodotisDAO.saveAimodotis(aimodotis);
+//            appFormRepository.save(appForm);
+//            return null;
+//        });
+//    }
 
     //admin and secretary can see all the blood donors
     @GetMapping("")

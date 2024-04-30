@@ -34,21 +34,21 @@ public class DonationRequestRestController {
     private UserDetailsServiceImpl userDetailsService;
 
     //setup donation requests
-    @PostConstruct
-    public void setup() {
-        donationRequestRepository.findByLocationAndDate("Athens", LocalDate.parse("2024-04-05")).orElseGet(() -> {
-            DonationRequest donationRequest = donationRequestRepository.save(new DonationRequest("Athens", LocalDate.parse("2024-04-05")));
-            donationRequest.setSecretary(secretaryRepository.findByAFM("123456789").get());
-            donationRequestService.saveDonationRequest(donationRequest);
-            return null;
-        });
-        donationRequestRepository.findByLocationAndDate("Patra", LocalDate.parse("2024-06-05")).orElseGet(() -> {
-            DonationRequest donationRequest = donationRequestRepository.save(new DonationRequest("Patra", LocalDate.parse("2024-06-05")));
-            donationRequest.setSecretary(secretaryRepository.findByAFM("123456789").get());
-            donationRequestService.saveDonationRequest(donationRequest);
-            return null;
-        });
-    }
+//    @PostConstruct
+//    public void setup() {
+//        donationRequestRepository.findByLocationAndDate("Athens", LocalDate.parse("2024-04-05")).orElseGet(() -> {
+//            DonationRequest donationRequest = donationRequestRepository.save(new DonationRequest("Athens", LocalDate.parse("2024-04-05")));
+//            donationRequest.setSecretary(secretaryRepository.findByAFM("123456789").get());
+//            donationRequestService.saveDonationRequest(donationRequest);
+//            return null;
+//        });
+//        donationRequestRepository.findByLocationAndDate("Patra", LocalDate.parse("2024-06-05")).orElseGet(() -> {
+//            DonationRequest donationRequest = donationRequestRepository.save(new DonationRequest("Patra", LocalDate.parse("2024-06-05")));
+//            donationRequest.setSecretary(secretaryRepository.findByAFM("123456789").get());
+//            donationRequestService.saveDonationRequest(donationRequest);
+//            return null;
+//        });
+//    }
 
     //admin and secretary can see all the donation requests
     @GetMapping("")
