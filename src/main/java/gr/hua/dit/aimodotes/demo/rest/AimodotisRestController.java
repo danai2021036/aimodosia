@@ -19,7 +19,7 @@ import java.time.Period;
 import java.util.*;
 
 @RestController
-@RequestMapping("/aimodotis")
+@RequestMapping("/api/aimodotis")
 public class AimodotisRestController {
 
     @Autowired

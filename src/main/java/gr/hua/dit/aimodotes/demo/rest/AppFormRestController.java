@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/appform")
+@RequestMapping("/api/appform")
 @Hidden
 public class AppFormRestController {
 

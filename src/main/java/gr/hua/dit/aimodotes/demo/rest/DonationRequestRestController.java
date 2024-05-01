@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/donationrequest")
+@RequestMapping("/api/donationrequest")
 public class DonationRequestRestController {
     @Autowired
     private DonationRequestRepository donationRequestRepository;
