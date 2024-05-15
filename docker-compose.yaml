@@ -21,8 +21,8 @@ services:
   spring:
     image: sp
     build:
-      context: .
-      dockerfile: nonroot.Dockerfile
+      context: src
+      dockerfile: src/nonroot.Dockerfile
     ports:
       - "9090:9090"
     depends_on:
