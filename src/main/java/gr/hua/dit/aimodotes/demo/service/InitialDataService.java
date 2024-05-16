@@ -208,7 +208,7 @@ public class InitialDataService {
     @PostConstruct
     public void setup() {
         this.createUsersAndRoles();
-        this.createDonationRequest();
         this.createAimodotisProfile();
+        this.createDonationRequest();
     }
 }
