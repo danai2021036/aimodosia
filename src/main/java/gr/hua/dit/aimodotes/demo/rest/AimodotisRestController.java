@@ -285,8 +285,12 @@ public class AimodotisRestController {
                 updatedBloodTest.setDetails(existingBloodTest.getDetails());
             }
 
-            existingBloodTest.setDetails(updatedBloodTest.getDetails());
-            existingBloodTest.setDate(LocalDate.now());
+            if(updatedBloodTest.getDate()!=null){
+                existingBloodTest.setDetails(updatedBloodTest.getDetails());
+                existingBloodTest.setDate(updatedBloodTest.getDate());
+            }
+
+//            existingBloodTest.setDate(LocalDate.now());
             BloodTest savedBloodTest = bloodTestRepository.save(existingBloodTest);
             response.put("message", "Blood Test Updated");
             return ResponseEntity.ok(response);
