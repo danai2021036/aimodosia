@@ -271,4 +271,28 @@ public class AimodotisRestController {
         response.put("error", "User not found!");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
+
+    @PostMapping("/updatebloodtest/{aimodotis_id}")
+    @Secured("ROLE_AIMODOTIS")
+    public ResponseEntity<Map<String,String>> updateBloodTest(@PathVariable Integer aimodotis_id, @RequestBody BloodTest updatedBloodTest) {
+        Aimodotis aimodotis = aimodotisRepository.findById(aimodotis_id).get();
+        AppForm appForm = aimodotis.getAppForm();
+        Optional<BloodTest> existingBloodTestOptional = bloodTestRepository.findByAppForm_Id(appForm.getId());
+        Map<String, String> response = new HashMap<>();
+        if(existingBloodTestOptional.isPresent()) {
+            BloodTest existingBloodTest = existingBloodTestOptional.get();
+            if(updatedBloodTest.getDetails().isBlank()){
+                updatedBloodTest.setDetails(existingBloodTest.getDetails());
+            }
+
+            existingBloodTest.setDetails(updatedBloodTest.getDetails());
+            existingBloodTest.setDate(LocalDate.now());
+            BloodTest savedBloodTest = bloodTestRepository.save(existingBloodTest);
+            response.put("message", "Blood Test Updated");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("error", "Blood Test not found");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }
