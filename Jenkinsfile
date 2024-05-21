@@ -42,7 +42,7 @@ pipeline {
             steps {
                 sh '''
                    # replace dbserver in host_vars
-                    # sed -i 's/dbserver/4.211.249.239/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
+                    sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                    # replace workingdir in host_vars
                     # sed -i 's/vagrant/azureuser/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                 '''
