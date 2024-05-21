@@ -18,7 +18,7 @@ pipeline {
 //        }
         stage('run ansible pipeline') {
             steps {
-                build job: 'ansible'
+                build job: 'ansible-aimodosia'
             }
         }
         //einai peritto
