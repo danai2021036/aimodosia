@@ -26,7 +26,7 @@ pipeline {
 //        }
         stage('run ansible pipeline') {
             steps {
-                build job: 'ansible'
+                build job: 'ansible-aimodosia'
             }
         }
         stage('Install project with docker compose') {
