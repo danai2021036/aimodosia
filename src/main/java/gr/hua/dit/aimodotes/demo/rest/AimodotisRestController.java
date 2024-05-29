@@ -164,7 +164,7 @@ public class AimodotisRestController {
                 emailService.sendEmail(savedAimodotis.getEmail(), subject, body);
             } catch (IOException e) {
                 e.printStackTrace();
-                response.put("error", "Donation request created, but failed to send confirmation email.");
+                response.put("error", "Your request has been done, but mail failed to send");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
             }
 
@@ -243,7 +243,7 @@ public class AimodotisRestController {
                     emailService.sendEmail(email, subject, body);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    response.put("error", "Donation request created, but failed to send confirmation email.");
+                    response.put("error", "Your request has been done, but mail failed to send");
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
                 }
                 response.put("message","Donation Request accepted!");
@@ -291,7 +291,7 @@ public class AimodotisRestController {
                 emailService.sendEmail(email, subject, body);
             } catch (IOException e) {
                 e.printStackTrace();
-                response.put("error", "Donation request created, but failed to send confirmation email.");
+                response.put("error", "Your request has been done, but mail failed to send");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
             }
             response.put("message","You are now a Blood Donator!");
@@ -327,7 +327,7 @@ public class AimodotisRestController {
                 emailService.sendEmail(aimodotis.getEmail(), subject, body);
             } catch (IOException e) {
                 e.printStackTrace();
-                response.put("error", "Donation request created, but failed to send confirmation email.");
+                response.put("error", "Your request has been done, but mail failed to send");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
             }
             response.put("message", "Blood Test Updated");

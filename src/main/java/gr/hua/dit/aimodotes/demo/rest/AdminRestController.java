@@ -139,7 +139,7 @@ public class AdminRestController {
             emailService.sendEmail(user.getEmail(), subject, body);
         } catch (IOException e) {
             e.printStackTrace();
-            response.put("error", "Donation request created, but failed to send confirmation email.");
+            response.put("error", "Your request has been done, but mail failed to send");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
 
