@@ -4,10 +4,7 @@ import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
 import gr.hua.dit.aimodotes.demo.entity.*;
 import gr.hua.dit.aimodotes.demo.repository.AimodotisRepository;
 import gr.hua.dit.aimodotes.demo.repository.AppFormRepository;
-import gr.hua.dit.aimodotes.demo.service.AppFormService;
-import gr.hua.dit.aimodotes.demo.service.BloodTestService;
-import gr.hua.dit.aimodotes.demo.service.UserDetailsImpl;
-import gr.hua.dit.aimodotes.demo.service.UserDetailsServiceImpl;
+import gr.hua.dit.aimodotes.demo.service.*;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @RestController
@@ -35,6 +33,9 @@ public class AppFormRestController {
 
     @Autowired
     private BloodTestService bloodTestService;
+
+    @Autowired
+    private EmailService emailService;
 
     //user can fill a new appform including his blood test
     @PostMapping("/new")
@@ -58,6 +59,14 @@ public class AppFormRestController {
                 aimodotisDAO.saveAimodotis(aimodotis);
                 bloodTestService.saveBloodTest(bloodTest, appForm.getId());
                 appFormService.saveAppForm(appForm, aimodotis.getId());
+                try {
+                    String subject = "Application Form Submitted";
+                    String body = "Your application form has been submitted. It is going to be reviewed by the secretary department and will let you know for the results!";
+                    emailService.sendEmail(userEmail, subject, body);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error sending email to the client!");
+                }
                 return ResponseEntity.ok("Application saved successfully!");
             }else{
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User's email doesnt match with the appform");

@@ -4,12 +4,14 @@ import gr.hua.dit.aimodotes.demo.dao.SecretaryDAO;
 import gr.hua.dit.aimodotes.demo.entity.*;
 import gr.hua.dit.aimodotes.demo.repository.SecretaryRepository;
 import gr.hua.dit.aimodotes.demo.service.AppFormService;
+import gr.hua.dit.aimodotes.demo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -24,7 +26,8 @@ public class SecretaryRestController {
     @Autowired
     private AppFormService appFormService;
 
-
+    @Autowired
+    private EmailService emailService;
 
     //admin can see all the secretaries
     @GetMapping("")
@@ -118,6 +121,13 @@ public class SecretaryRestController {
 
         appForm.setStatus(AppForm.Status.ACCEPTED);
         appFormService.saveAppForm(appForm, aimodotis.getId());
+        try {
+            String subject = "Your application has been accepted!";
+            String body = "We reviewed your form and we would like to let you know that you follow all the requirements to be a Blood Donor! Proceed to confirm your contact information on our website! Thank you for applying to our org:)";
+            emailService.sendEmail(aimodotis.getEmail(), subject, body);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return appForm;
     }
 
@@ -126,8 +136,17 @@ public class SecretaryRestController {
     @Secured("ROLE_SECRETARY")
     public ResponseEntity<Map<String,String>> declineAppForm(@PathVariable Integer appform_id){
         Map<String,String> response = new HashMap<>();
+        AppForm appForm = appFormService.getAppForm(appform_id);
+        Aimodotis aimodotis = appForm.getAimodotis();
         try{
             appFormService.deleteAppForm(appform_id);
+            try {
+                String subject = "Your application has been declined!";
+                String body = "We are sorry to tell you that your application form has been declined. Thank you for applying to our org:)";
+                emailService.sendEmail(aimodotis.getEmail(), subject, body);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             response.put("message", "Application Form declined and Blood Donator deleted!");
             return ResponseEntity.ok(response);
         }catch(Exception e){

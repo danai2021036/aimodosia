@@ -3,10 +3,7 @@ package gr.hua.dit.aimodotes.demo.rest;
 import gr.hua.dit.aimodotes.demo.dao.AimodotisDAO;
 import gr.hua.dit.aimodotes.demo.entity.*;
 import gr.hua.dit.aimodotes.demo.repository.*;
-import gr.hua.dit.aimodotes.demo.service.AppFormService;
-import gr.hua.dit.aimodotes.demo.service.BloodTestService;
-import gr.hua.dit.aimodotes.demo.service.DonationRequestService;
-import gr.hua.dit.aimodotes.demo.service.UserDetailsServiceImpl;
+import gr.hua.dit.aimodotes.demo.service.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -51,6 +49,9 @@ public class AimodotisRestController {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private EmailService emailService;
 
     //setup blood donors
 //    @PostConstruct
@@ -157,6 +158,16 @@ public class AimodotisRestController {
             existingAimodotis.setLocation(updatedAimodotis.getLocation());
 
             Aimodotis savedAimodotis = aimodotisRepository.save(existingAimodotis);
+            try {
+                String subject = "Your personal information has been updated";
+                String body = "We have successfully update your personal information";
+                emailService.sendEmail(savedAimodotis.getEmail(), subject, body);
+            } catch (IOException e) {
+                e.printStackTrace();
+                response.put("error", "Donation request created, but failed to send confirmation email.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
+
             response.put("message", "Aimodotis Updated");
             return ResponseEntity.ok(response);
         } else {
@@ -226,6 +237,15 @@ public class AimodotisRestController {
                 updateAimodotis(aimodotis.getId(), aimodotis);
                 donationRequest.addAimodotis(aimodotis);
                 donationRequestService.saveDonationRequest(donationRequest);
+                try {
+                    String subject = "Accepted Blood Donation";
+                    String body = "The blood donation you have requested to attend with location " + donationRequest.getLocation() + " on " + donationRequest.getDate() + " has been accepted.";
+                    emailService.sendEmail(email, subject, body);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    response.put("error", "Donation request created, but failed to send confirmation email.");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+                }
                 response.put("message","Donation Request accepted!");
                 return ResponseEntity.ok(response);
             }else{
@@ -265,6 +285,15 @@ public class AimodotisRestController {
             roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
             user.setRoles(roles);
             userRepository.save(user);
+            try {
+                String subject = "You are now officially a Blood Donator!";
+                String body = "Your application form has been accepted by the secretary. You are officially a blood donor! When you log back in to your account you will have access to blood donations to attend.";
+                emailService.sendEmail(email, subject, body);
+            } catch (IOException e) {
+                e.printStackTrace();
+                response.put("error", "Donation request created, but failed to send confirmation email.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
             response.put("message","You are now a Blood Donator!");
             return ResponseEntity.ok(response);
         }
@@ -292,6 +321,15 @@ public class AimodotisRestController {
 
 //            existingBloodTest.setDate(LocalDate.now());
             BloodTest savedBloodTest = bloodTestRepository.save(existingBloodTest);
+            try {
+                String subject = "Updated Blood Test";
+                String body = "Your blood test details have been updated successfully!";
+                emailService.sendEmail(aimodotis.getEmail(), subject, body);
+            } catch (IOException e) {
+                e.printStackTrace();
+                response.put("error", "Donation request created, but failed to send confirmation email.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
             response.put("message", "Blood Test Updated");
             return ResponseEntity.ok(response);
         } else {

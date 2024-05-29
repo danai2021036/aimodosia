@@ -11,14 +11,17 @@ import gr.hua.dit.aimodotes.demo.repository.AimodotisRepository;
 import gr.hua.dit.aimodotes.demo.repository.RoleRepository;
 import gr.hua.dit.aimodotes.demo.repository.SecretaryRepository;
 import gr.hua.dit.aimodotes.demo.repository.UserRepository;
+import gr.hua.dit.aimodotes.demo.service.EmailService;
 import gr.hua.dit.aimodotes.demo.service.RoleService;
 import gr.hua.dit.aimodotes.demo.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -51,6 +54,9 @@ public class AdminRestController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private EmailService emailService;
 
     //admin can see all the users' details
     @GetMapping("/users")
@@ -127,6 +133,16 @@ public class AdminRestController {
         user.setRoles(roles);
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
+        try {
+            String subject = "New profile created in Aimodosia Website";
+            String body = "A new user profile has been created for you by the admin. Your username is: " + user.getUsername() + " with email " + user.getEmail() + ".";
+            emailService.sendEmail(user.getEmail(), subject, body);
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.put("error", "Donation request created, but failed to send confirmation email.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
         response.put("success", "Added user!");
         return ResponseEntity.ok(response);
     }
