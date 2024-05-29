@@ -88,8 +88,8 @@ public class InitialDataService {
 //            userRepository.save(user);
 //            return null;
 //        });
-        this.userRepository.findByEmail("admin@gmail.com").orElseGet(() -> {
-            User user = new User("admin","admin@gmail.com", this.passwordEncoder.encode("1234"));
+        this.userRepository.findByEmail("georgegolf1234@gmail.com").orElseGet(() -> {
+            User user = new User("admin","georgegolf1234@gmail.com", this.passwordEncoder.encode("1234"));
             Set<Role> roles = new HashSet<>();
             roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
             roles.add(this.roleRepository.findByName("ROLE_ADMIN").orElseThrow());
@@ -98,8 +98,8 @@ public class InitialDataService {
             return null;
         });
 
-        this.userRepository.findByEmail("sec@gmail.com").orElseGet(() -> {
-            User user = new User("sec","sec@gmail.com", this.passwordEncoder.encode("1234"));
+        this.userRepository.findByEmail("dan.kamper.ou@gmail.com").orElseGet(() -> {
+            User user = new User("sec","dan.kamper.ou@gmail.com", this.passwordEncoder.encode("1234"));
             Set<Role> roles = new HashSet<>();
             roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
             roles.add(this.roleRepository.findByName("ROLE_SECRETARY").orElseThrow());
@@ -108,8 +108,8 @@ public class InitialDataService {
             return null;
         });
 
-        this.userRepository.findByEmail("naf@gmail.com").orElseGet(() -> {
-            User user = new User("naf","naf@gmail.com", this.passwordEncoder.encode("1234"));
+        this.userRepository.findByEmail("naf.pap2003@gmail.com").orElseGet(() -> {
+            User user = new User("naf","naf.pap2003@gmail.com", this.passwordEncoder.encode("1234"));
             Set<Role> roles = new HashSet<>();
             roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
             roles.add(this.roleRepository.findByName("ROLE_AIMODOTIS").orElseThrow());
