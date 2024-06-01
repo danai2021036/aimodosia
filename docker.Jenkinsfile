@@ -32,7 +32,7 @@ pipeline {
         stage('Install project with docker compose') {
             steps {
                 sh '''
-                            sed -i 's/dbserver/51.103.251.219/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
+                            sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                             export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
                             ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l appserver-vm ~/workspace/ansible-aimodosia/playbooks/spring-vue-docker.yaml
                         '''

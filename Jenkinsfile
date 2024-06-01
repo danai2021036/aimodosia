@@ -42,7 +42,7 @@ pipeline {
             steps {
                 sh '''
                    # replace dbserver in host_vars
-                    sed -i 's/dbserver/51.103.251.219/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
+                    sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                    # replace workingdir in host_vars
                     # sed -i 's/vagrant/azureuser/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                 '''
@@ -57,7 +57,7 @@ pipeline {
         stage('Deploy frontend') {
             steps {
                 sh '''
-                    sed -i 's/dbserver/51.103.251.219/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
+                    sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                     export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
                     ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l appserver-vm -e branch=devops -e backend_server_url=http://localhost:9090 ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
                 '''
