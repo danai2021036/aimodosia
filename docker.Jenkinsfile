@@ -23,7 +23,7 @@ pipeline {
         stage('Replace SendGrid Key') {
             steps {
                 sh '''
-                    sed -i 's/sendgrid.key=.*/sendgrid.key=${SENDGRID_KEY}/' ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                    sed -i 's/app.sendgrid.key=.*/app.sendgrid.key=${SENDGRID_KEY}/' ~/workspace/spring-aimodosia/src/main/resources/application.properties
                 '''
             }
         }

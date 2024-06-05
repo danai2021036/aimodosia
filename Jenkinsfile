@@ -15,7 +15,7 @@ pipeline {
         stage('Replace SendGrid Key') {
             steps {
                 sh '''
-                    sed -i 's/sendgrid.key=.*/sendgrid.key=${SENDGRID_KEY}/' ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                    sed -i 's/app.sendgrid.key=.*/app.sendgrid.key=${SENDGRID_KEY}/' ~/workspace/spring-aimodosia/src/main/resources/application.properties
                 '''
             }
         }
@@ -50,7 +50,7 @@ pipeline {
             steps {
                 sh '''
                    # replace dbserver in host_vars
-                    sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
+                   # sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                    # replace workingdir in host_vars
                     # sed -i 's/vagrant/azureuser/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                 '''
@@ -58,16 +58,16 @@ pipeline {
                     # edit host var for appserver
 
                     export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
-                    ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l appserver-vm ~/workspace/ansible-aimodosia/playbooks/spring.yaml
+                    ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l gcloud-app-server ~/workspace/ansible-aimodosia/playbooks/spring.yaml
                 '''
             }
         }
         stage('Deploy frontend') {
             steps {
                 sh '''
-                    sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
+                   # sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                     export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
-                    ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l appserver-vm -e branch=devops -e backend_server_url=http://localhost:9090 ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
+                    ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-vm -e branch=devops -e backend_server_url=http://localhost:9090 ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
                 '''
             }
         }
