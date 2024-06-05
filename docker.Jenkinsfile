@@ -11,12 +11,20 @@ pipeline {
         DOCKER_USER = 'nafsikap'
         DOCKER_SERVER = 'ghcr.io'
         DOCKER_PREFIX = 'ghcr.io/nafsikap/ds-spring'
+        SENDGRID_KEY = credentials('SENDGRID_KEY')
     }
 
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'api', url: 'git@github.com:danai2021036/aimodosia.git'
+            }
+        }
+        stage('Replace SendGrid Key') {
+            steps {
+                sh '''
+                    sed -i 's/sendgrid.key=.*/sendgrid.key=${SENDGRID_KEY}/' ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                '''
             }
         }
 //        stage('Test') {
