@@ -3,12 +3,20 @@ pipeline {
 
     environment {
         EMAIL_TO = "it2021077@hua.gr"
+        SENDGRID_KEY = credentials('SENDGRID_KEY')
     }
 
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'api', url: 'git@github.com:danai2021036/aimodosia.git'
+            }
+        }
+        stage('Replace SendGrid Key') {
+            steps {
+                sh '''
+                    sed -i 's/sendgrid.key=.*/sendgrid.key=${SENDGRID_KEY}/' ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                '''
             }
         }
 //        stage('Test') {
