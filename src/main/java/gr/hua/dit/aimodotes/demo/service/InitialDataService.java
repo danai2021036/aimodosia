@@ -156,11 +156,11 @@ public class InitialDataService {
 
     private void createAimodotisProfile() {
         secretaryRepository.findByAFM("123456789").orElseGet(() -> {
-            secretaryRepository.save(new Secretary("Maria", "Papa","123456789", "sec@gmail.com"));
+            secretaryRepository.save(new Secretary("Maria", "Papa","123456789", "dan.kamper.ou@gmail.com"));
             return null;
         });
         aimodotisRepository.findByAMKA("05110301111").orElseGet(() -> {
-            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf@gmail.com", "6985762160", "05110301111", 'F', LocalDate.parse("2024-01-11"), 20, "Athens"));
+            Aimodotis aimodotis = aimodotisRepository.save(new Aimodotis("Nafsika", "Papaioannou", "naf.pap2003@gmail.com", "6985762160", "05110301111", 'F', LocalDate.parse("2024-01-11"), 20, "Athens"));
             AppForm appForm = appFormRepository.save(new AppForm(AppForm.Status.ACCEPTED,LocalDate.parse("2024-01-10")));
             BloodTest bloodTest = bloodTestRepository.save(new BloodTest(LocalDate.parse("2021-11-25"), "White Blood Cell Count (WBC): 7.2 x10^3/µL\n Red Blood Cell Count (RBC): 5.0 x10^6/µL\n Hemoglobin (HGB): 15.5 g/dL\n Hematocrit (HCT): 45%\n Platelet Count: 250 x10^3/µL","0+"));
             appForm.setAimodotis(aimodotis);
