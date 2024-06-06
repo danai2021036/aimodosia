@@ -67,7 +67,8 @@ pipeline {
                 sh '''
                    # sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                     export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
-                    ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-vm -e branch=devops -e backend_server_url=http://localhost:9090 ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
+                   # ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-vm -e branch=devops -e backend_server_url=http://localhost:9090 ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
+                   ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-vm -e branch=devops ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
                 '''
             }
         }
