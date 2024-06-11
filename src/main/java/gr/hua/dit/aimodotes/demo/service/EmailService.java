@@ -104,7 +104,7 @@ public class EmailService {
 //        return mail;
 //    }
     public void sendEmail(String to, String subject, String body) throws IOException {
-        Email from = new Email("it2021077@hua.gr");
+        Email from = new Email("dyvri15dyvri@yahoo.gr");
         Email toEmail = new Email(to);
         Content content = new Content("text/plain", body);
         Mail mail = new Mail(from, subject, toEmail, content);
