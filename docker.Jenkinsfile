@@ -20,10 +20,20 @@ pipeline {
                 git branch: 'api', url: 'git@github.com:danai2021036/aimodosia.git'
             }
         }
+//        stage('Replace SendGrid Key') {
+//            steps {
+//                sh '''
+//                    sed -i 's/app.sendgrid.key=.*/app.sendgrid.key=${SENDGRID_KEY}/' ~/workspace/spring-aimodosia/src/main/resources/application.properties
+//                '''
+//            }
+//        }
         stage('Replace SendGrid Key') {
             steps {
                 sh '''
-                    sed -i 's/app.sendgrid.key=.*/app.sendgrid.key=${SENDGRID_KEY}/' ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                    echo "Replacing SendGrid Key..."
+                    sed -i "s|app.sendgrid.key=.*|app.sendgrid.key=${SENDGRID_KEY}|" ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                    echo "Replacement done. Verifying..."
+                    grep "app.sendgrid.key=" ~/workspace/spring-aimodosia/src/main/resources/application.properties
                 '''
             }
         }
