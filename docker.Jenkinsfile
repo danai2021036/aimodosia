@@ -29,7 +29,7 @@ pipeline {
                 echo "Replacing SendGrid Key..."
                 sed -i "s|app.sendgrid.key=.*|app.sendgrid.key=${SENDGRID_KEY}|" ~/workspace/docker-aimodosia@2/src/main/resources/application.properties
                 echo "Replacement done. Verifying..."
-                grep "app.sendgrid.key=" ~/workspace/docker-aimodosia/src/main/resources/application.properties
+                grep "app.sendgrid.key=" ~/workspace/docker-aimodosia@2/src/main/resources/application.properties
             """
                 }
             }
