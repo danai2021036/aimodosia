@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "it2021077-spring.ddns.net"
+    - host: "aimodosia-spring.ddns.net"
       http:
         paths:
           - path: /
@@ -22,5 +22,5 @@ spec:
                   name: vue
   tls:
     - hosts:
-        - it2021077-spring.ddns.net
+        - aimodosia-spring.ddns.net
       secretName: spring-production-certificate
