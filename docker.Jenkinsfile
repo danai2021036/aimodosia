@@ -59,7 +59,7 @@ pipeline {
                 sh '''
                             sed -i 's/dbserver/51.103.251.219/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                             export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
-                            ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l appserver-vm ~/workspace/ansible-aimodosia/playbooks/spring-vue-docker.yaml
+                            ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l dockervm ~/workspace/ansible-aimodosia/playbooks/spring-vue-docker.yaml
                         '''
             }
         }
