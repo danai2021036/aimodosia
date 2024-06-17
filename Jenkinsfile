@@ -71,7 +71,7 @@ pipeline {
                     # edit host var for appserver
 
                     export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
-                    ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l gcloud-app-server ~/workspace/ansible-aimodosia/playbooks/spring.yaml
+                    ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l backend-server -e dbvm_ip=4.233.185.183 ~/workspace/ansible-aimodosia/playbooks/spring.yaml
                 '''
             }
         }
@@ -80,7 +80,7 @@ pipeline {
                 sh '''
                    # sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                     export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
-                     ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-vm -e branch=devops ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
+                     ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-server -e frontendvm_ip=4.211.130.207 -e backendvm_ip=34.38.31.68 ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
                    # ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-vm -e branch=devops ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
                 '''
             }
