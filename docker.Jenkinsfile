@@ -44,11 +44,11 @@ pipeline {
 //                '''
 //            }
 //        }
-//        stage('Test') {
-//            steps {
-//                sh 'chmod +x ./mvnw'
-//            }
-//        }
+        stage('Test') {
+            steps {
+                sh 'chmod +x ./mvnw'
+            }
+        }
         stage('run ansible pipeline') {
             steps {
                 build job: 'ansible-aimodosia'
