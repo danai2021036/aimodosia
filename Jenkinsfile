@@ -25,9 +25,9 @@ pipeline {
                     echo "SENDGRID_KEY: ${SENDGRID_KEY}"
                     sh """
                 echo "Replacing SendGrid Key..."
-                sed -i "s|app.sendgrid.key=.*|app.sendgrid.key=${SENDGRID_KEY}|" ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                sed -i "s|sendgrid.key=.*|sendgrid.key=${SENDGRID_KEY}|" ~/workspace/spring-aimodosia/src/main/resources/application.properties
                 echo "Replacement done. Verifying..."
-                grep "app.sendgrid.key=" ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                grep "sendgrid.key=" ~/workspace/spring-aimodosia/src/main/resources/application.properties
             """
                 }
             }

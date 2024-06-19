@@ -103,6 +103,26 @@ public class EmailService {
 //
 //        return mail;
 //    }
+    //LAST ONE
+//    public void sendEmail(String to, String subject, String body) throws IOException {
+//        Email from = new Email("it2021077@hua.gr");
+//        Email toEmail = new Email(to);
+//        Content content = new Content("text/plain", body);
+//        Mail mail = new Mail(from, subject, toEmail, content);
+//
+//        Request request = new Request();
+//        try {
+//            request.setMethod(Method.POST);
+//            request.setEndpoint("mail/send");
+//            request.setBody(mail.build());
+//            Response response = sendGrid.api(request);
+//            System.out.println(response.getStatusCode());
+//            System.out.println(response.getBody());
+//            System.out.println(response.getHeaders());
+//        } catch (IOException ex) {
+//            throw ex;
+//        }
+//    }
     public void sendEmail(String to, String subject, String body) throws IOException {
         Email from = new Email("it2021077@hua.gr");
         Email toEmail = new Email(to);
