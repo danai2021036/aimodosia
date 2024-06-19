@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Sendgridconfig {
 
-    @Value("${app.sendgrid.key}")
+    @Value("${sendgrid.key}")
     private String appKey;
 
     @Bean
