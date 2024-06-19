@@ -32,11 +32,11 @@ pipeline {
                 }
             }
         }
-//        stage('Test') {
-//            steps {
-//                sh 'chmod +x ./mvnw && ./mvnw test'
-//            }
-//        }
+        stage('Test') {
+            steps {
+                sh 'chmod +x ./mvnw && ./mvnw test'
+            }
+        }
         stage('run ansible pipeline') {
             steps {
                 build job: 'ansible-aimodosia'

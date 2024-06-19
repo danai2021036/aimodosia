@@ -19,11 +19,11 @@ pipeline {
                 git branch: 'api', url: 'git@github.com:danai2021036/aimodosia.git'
             }
         }
-//        stage('Test') {
-//            steps {
-//                sh './mvnw test'
-//            }
-//        }
+        stage('Test') {
+            steps {
+                sh 'chmod +x ./mvnw && ./mvnw test'
+            }
+        }
         stage('Kubectl commands to run postgres') {
             steps {
                 sh '''
