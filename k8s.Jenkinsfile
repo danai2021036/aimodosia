@@ -11,6 +11,7 @@ pipeline {
         DOCKER_USER = 'nafsikap'
         DOCKER_SERVER = 'ghcr.io'
         DOCKER_PREFIX = 'ghcr.io/nafsikap/ds-spring'
+        FILEPATH = "~/workspace/k8s-aimodosia/k8s/spring/spring.env"
     }
 
     stages {
@@ -36,7 +37,7 @@ pipeline {
         stage('Kubectl commands to run spring') {
             steps {
                 sh '''
-                    ~/kubectl create cm spring-config --from-env-file=~/workspace/k8s-aimodosia/k8s/spring/spring.env
+                    ~/kubectl create cm spring-config --from-env-file=${FILEPATH} 
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-deployment.yaml
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-svc.yaml
                 '''
