@@ -24,6 +24,33 @@ pipeline {
 //                sh './mvnw test'
 //            }
 //        }
+        stage('Kubectl commands to run postgres') {
+            steps {
+                sh '''
+                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/postgres/postgres-deployment.yaml
+                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/postgres/postgres-pvc.yaml
+                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/postgres/postgres-svc.yaml
+                '''
+            }
+        }
+        stage('Kubectl commands to run spring') {
+            steps {
+                sh '''
+                    ~/kubectl create cm spring-config --from-env-file=~/workspace/k8s-aimodosia/k8s/spring/spring.env
+                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-deployment.yaml
+                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-svc.yaml
+                '''
+            }
+        }
+        stage('Kubectl commands to run vue') {
+            steps {
+                sh '''
+                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-deployment.yaml
+                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-svc.yaml
+                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-ingress.yaml
+                '''
+            }
+        }
         stage('Docker build and push') {
             steps {
                 sh '''
