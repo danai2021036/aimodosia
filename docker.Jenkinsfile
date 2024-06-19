@@ -44,9 +44,10 @@ pipeline {
 //                '''
 //            }
 //        }
+
         stage('Test') {
             steps {
-                sh 'chmod +x ./mvnw'
+                sh 'chmod +x ./mvnw && ./mvnw test'
             }
         }
         stage('run ansible pipeline') {
