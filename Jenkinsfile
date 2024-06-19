@@ -19,19 +19,19 @@ pipeline {
 //                '''
 //            }
 //        }
-        stage('Replace SendGrid Key') {
-            steps {
-                script {
-                    echo "SENDGRID_KEY: ${SENDGRID_KEY}"
-                    sh """
-                echo "Replacing SendGrid Key..."
-                sed -i "s|sendgrid.key=.*|sendgrid.key=${SENDGRID_KEY}|" ~/workspace/spring-aimodosia/src/main/resources/application.properties
-                echo "Replacement done. Verifying..."
-                grep "sendgrid.key=" ~/workspace/spring-aimodosia/src/main/resources/application.properties
-            """
-                }
-            }
-        }
+//        stage('Replace SendGrid Key') {
+//            steps {
+//                script {
+//                    echo "SENDGRID_KEY: ${SENDGRID_KEY}"
+//                    sh """
+//                echo "Replacing SendGrid Key..."
+//                sed -i "s|sendgrid.key=.*|sendgrid.key=${SENDGRID_KEY}|" ~/workspace/spring-aimodosia/src/main/resources/application.properties
+//                echo "Replacement done. Verifying..."
+//                grep "sendgrid.key=" ~/workspace/spring-aimodosia/src/main/resources/application.properties
+//            """
+//                }
+//            }
+//        }
         stage('Test') {
             steps {
                 sh 'chmod +x ./mvnw && ./mvnw test'
@@ -73,6 +73,15 @@ pipeline {
                     export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
                     ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l backend-server -e dbvm_ip=4.233.185.183 ~/workspace/ansible-aimodosia/playbooks/spring.yaml
                 '''
+                script {
+                    echo "SENDGRID_KEY: ${SENDGRID_KEY}"
+                    sh """
+                echo "Replacing SendGrid Key..."
+                sed -i "s|sendgrid.key=.*|sendgrid.key=${SENDGRID_KEY}|" ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                echo "Replacement done. Verifying..."
+                grep "sendgrid.key=" ~/workspace/spring-aimodosia/src/main/resources/application.properties
+                """
+                }
             }
         }
         stage('Deploy frontend') {
