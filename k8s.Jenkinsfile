@@ -37,7 +37,7 @@ pipeline {
         stage('Kubectl commands to run spring') {
             steps {
                 sh '''
-                    ~/kubectl create cm spring-config --from-env-file=${FILEPATH} 
+                    # ~/kubectl create cm spring-config --from-env-file=${FILEPATH} 
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-deployment.yaml
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-svc.yaml
                 '''
