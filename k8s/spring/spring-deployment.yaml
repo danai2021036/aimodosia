@@ -39,16 +39,16 @@ spec:
             limits:
               cpu: 1000m
               memory: 512Mi
-#          env:
-#            - name: SPRING_DATASOURCE_URL
-#              value: jdbc:postgresql://postgres:5432/dsdb
-#            - name: SPRING_DATASOURCE_USERNAME
-#              value: dbuser
-#            - name: SPRING_DATASOURCE_PASSWORD
-#              value: pass123
-          envFrom:
-            - configMapRef:
-                name: spring-config
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/dsdb
+            - name: SPRING_DATASOURCE_USERNAME
+              value: dbuser
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: pass123
+#          envFrom:
+#            - configMapRef:
+#                name: spring-config
           ports:
             - containerPort:  9090
               name:  spring
