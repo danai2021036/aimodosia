@@ -21,19 +21,20 @@ pipeline {
             }
         }
 
-        stage('Replace SendGrid Key') {
-            steps {
-                script {
-                    echo "SENDGRID_KEY: ${SENDGRID_KEY}"
-                    sh """
-                echo "Replacing SendGrid Key..."
-                sed -i "s|app.sendgrid.key=.*|app.sendgrid.key=${SENDGRID_KEY}|" ~/workspace/docker-aimodosia/src/main/resources/application.properties
-                echo "Replacement done. Verifying..."
-                grep "app.sendgrid.key=" ~/workspace/docker-aimodosia/src/main/resources/application.properties
-            """
-                }
-            }
-        }
+//        stage('Replace SendGrid Key') {
+//            steps {
+//                script {
+//                    echo "SENDGRID_KEY: ${SENDGRID_KEY}"
+//                    sh """
+//                echo "Replacing SendGrid Key..."
+//                sed -i "s|app.sendgrid.key=.*|app.sendgrid.key=${SENDGRID_KEY}|" ~/workspace/docker-aimodosia/src/main/resources/application.properties
+//                echo "Replacement done. Verifying..."
+//                grep "app.sendgrid.key=" ~/workspace/docker-aimodosia/src/main/resources/application.properties
+//            """
+//                }
+//            }
+//        }
+        
 //        stage('Replace SendGrid Key') {
 //            steps {
 //                sh '''
@@ -62,6 +63,16 @@ pipeline {
                             export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
                             ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l dockervm ~/workspace/ansible-aimodosia/playbooks/spring-vue-docker.yaml
                         '''
+
+                script {
+                    echo "SENDGRID_KEY: ${SENDGRID_KEY}"
+                    sh """
+                echo "Replacing SendGrid Key..."
+                sed -i "s|app.sendgrid.key=.*|app.sendgrid.key=${SENDGRID_KEY}|" ~/workspace/docker-aimodosia/src/main/resources/application.properties
+                echo "Replacement done. Verifying..."
+                grep "app.sendgrid.key=" ~/workspace/docker-aimodosia/src/main/resources/application.properties
+                """
+                }
             }
         }
 //        stage('Replace SendGrid Key') {
