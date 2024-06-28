@@ -59,20 +59,11 @@ pipeline {
         stage('Install project with docker compose') {
             steps {
                 sh '''
-                            sed -i 's/dbserver/51.103.251.219/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
-                            export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
-                            ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l dockervm ~/workspace/ansible-aimodosia/playbooks/spring-vue-docker.yaml
-                        '''
-
-                script {
-                    echo "SENDGRID_KEY: ${SENDGRID_KEY}"
-                    sh """
-                echo "Replacing SendGrid Key..."
-                sed -i "s|sendgrid.key=.*|sendgrid.key=${SENDGRID_KEY}|" ~/workspace/docker-aimodosia/src/main/resources/application.properties
-                echo "Replacement done. Verifying..."
-                grep "sendgrid.key=" ~/workspace/docker-aimodosia/src/main/resources/application.properties
-                """
-                }
+                    sed -i 's/dbserver/51.103.251.219/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
+                    export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
+                    export SENDGRID_KEY=${SENDGRID_KEY}
+                    ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l dockervm ~/workspace/ansible-aimodosia/playbooks/spring-vue-docker.yaml
+                '''
             }
         }
 //        stage('Replace SendGrid Key') {
