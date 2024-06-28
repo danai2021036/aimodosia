@@ -80,7 +80,7 @@ pipeline {
                 sh '''
                    # sed -i 's/dbserver/51.13.41.31/g' ~/workspace/ansible-aimodosia/host_vars/appserver-vm.yaml
                     export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
-                     ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-server -e frontendvm_ip=172.167.33.29 -e backendvm_ip=35.187.190.251 ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
+                     ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-server -e frontendvm_ip=172.167.33.29 -e backendvm_ip=104.155.97.142 ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
                    # ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l frontend-vm -e branch=devops ~/workspace/ansible-aimodosia/playbooks/vuejs.yaml
                 '''
             }
