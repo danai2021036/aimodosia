@@ -50,6 +50,13 @@ pipeline {
                     #~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-deployment.yaml
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-svc.yaml
                 '''
+
+                sh '''
+                    HEAD_COMMIT=$(git rev-parse --short HEAD)
+                    TAG=$HEAD_COMMIT-$BUILD_ID
+                    ~/kubectl set image deployment/spring-deployment spring=$DOCKER_PREFIX:$TAG
+                    ~/kubectl rollout status deployment spring-deployment --watch --timeout=2m
+                '''
             }
         }
         stage('Kubectl commands to run vue') {
@@ -58,6 +65,13 @@ pipeline {
                     #~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-deployment.yaml
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-svc.yaml
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-ingress.yaml
+                '''
+
+                sh '''
+                    HEAD_COMMIT=$(git rev-parse --short HEAD)
+                    TAG=$HEAD_COMMIT-$BUILD_ID
+                    ~/kubectl set image deployment/vue-deployment vue=$DOCKER_PREFIX:$TAG
+                    ~/kubectl rollout status deployment vue-deployment --watch --timeout=2m
                 '''
             }
         }
