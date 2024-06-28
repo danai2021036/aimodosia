@@ -47,7 +47,7 @@ pipeline {
             steps {
                 sh '''
                     # ~/kubectl create cm spring-config --from-env-file=k8s/spring/spring.env
-                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-deployment.yaml
+                    #~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-deployment.yaml
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/spring/spring-svc.yaml
                 '''
             }
@@ -55,7 +55,7 @@ pipeline {
         stage('Kubectl commands to run vue') {
             steps {
                 sh '''
-                    ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-deployment.yaml
+                    #~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-deployment.yaml
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-svc.yaml
                     ~/kubectl apply -f ~/workspace/k8s-aimodosia/k8s/vue/vue-ingress.yaml
                 '''
