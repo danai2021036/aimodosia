@@ -69,19 +69,10 @@ pipeline {
                 '''
                 sh '''
                     # edit host var for appserver
-
                     export ANSIBLE_CONFIG=~/workspace/ansible-aimodosia/ansible.cfg
+                    export SENDGRID_KEY=${SENDGRID_KEY}
                     ansible-playbook -i ~/workspace/ansible-aimodosia/hosts.yaml -l backend-server -e dbvm_ip=4.233.185.183 ~/workspace/ansible-aimodosia/playbooks/spring.yaml
                 '''
-                script {
-                    echo "SENDGRID_KEY: ${SENDGRID_KEY}"
-                    sh """
-                echo "Replacing SendGrid Key..."
-                sed -i "s|sendgrid.key=.*|sendgrid.key=${SENDGRID_KEY}|" ~/workspace/spring-aimodosia/src/main/resources/application.properties
-                echo "Replacement done. Verifying..."
-                grep "sendgrid.key=" ~/workspace/spring-aimodosia/src/main/resources/application.properties
-                """
-                }
             }
         }
         stage('Deploy frontend') {
