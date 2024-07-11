@@ -38,22 +38,7 @@ public class DonationRequestRestController {
 
     @Autowired
     private EmailService emailservice;
-    //setup donation requests
-//    @PostConstruct
-//    public void setup() {
-//        donationRequestRepository.findByLocationAndDate("Athens", LocalDate.parse("2024-04-05")).orElseGet(() -> {
-//            DonationRequest donationRequest = donationRequestRepository.save(new DonationRequest("Athens", LocalDate.parse("2024-04-05")));
-//            donationRequest.setSecretary(secretaryRepository.findByAFM("123456789").get());
-//            donationRequestService.saveDonationRequest(donationRequest);
-//            return null;
-//        });
-//        donationRequestRepository.findByLocationAndDate("Patra", LocalDate.parse("2024-06-05")).orElseGet(() -> {
-//            DonationRequest donationRequest = donationRequestRepository.save(new DonationRequest("Patra", LocalDate.parse("2024-06-05")));
-//            donationRequest.setSecretary(secretaryRepository.findByAFM("123456789").get());
-//            donationRequestService.saveDonationRequest(donationRequest);
-//            return null;
-//        });
-//    }
+
 
     //admin and secretary can see all the donation requests
     @GetMapping("")
@@ -62,29 +47,7 @@ public class DonationRequestRestController {
         return donationRequestService.getDonationRequests();
     }
 
-    //secretary can create a new donation request based on the location and the date
-//    @PostMapping("/{user_id}/new")
-//    @Secured("ROLE_SECRETARY")
-//    public ResponseEntity<Map<String, String>> saveDonationRequest(@PathVariable Integer user_id, @RequestBody DonationRequest donationRequest) {
-//        Map<String, String> response = new HashMap<>();
-//        if (donationRequestRepository.findByLocationAndDate(donationRequest.getLocation(), donationRequest.getDate()).isPresent()) {
-//            System.out.println("Donation Request already exists.");
-//            response.put("error", "Error. Donation Request already exists.");
-//            return ResponseEntity.badRequest().body(response);
-//        } else if (donationRequest.getDate()==null || donationRequest.getLocation().isBlank() || donationRequest.getDate().isBefore(LocalDate.now())) {
-//            return ResponseEntity.badRequest().body(response);
-//        } else {
-//            User user = userDetailsService.getUser(user_id);
-//            String email = user.getEmail();
-//            Secretary secretary = secretaryRepository.findByEmail(email).orElse(null);
-//            if (secretary != null) {
-//                donationRequest.setSecretary(secretaryRepository.findById(secretary.getId()).get());
-//                donationRequestService.saveDonationRequest(donationRequest);
-//            }
-//        }
-//        response.put("success", "Created New Donation Request");
-//        return ResponseEntity.ok(response);
-//    }
+
     @PostMapping("/{user_id}/new")
     @Secured("ROLE_SECRETARY")
     public ResponseEntity<Map<String, String>> saveDonationRequest(@PathVariable Integer user_id, @RequestBody DonationRequest donationRequest) {

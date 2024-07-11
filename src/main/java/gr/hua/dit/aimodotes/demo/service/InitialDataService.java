@@ -50,24 +50,6 @@ public class InitialDataService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //    private void createRoles() {
-//        roleRepository.findByName("ROLE_ADMIN").orElseGet(() -> {
-//            roleRepository.save(new Role("ROLE_ADMIN"));
-//            return null;
-//        });
-//        roleRepository.findByName("ROLE_USER").orElseGet(() -> {
-//            roleRepository.save(new Role("ROLE_USER"));
-//            return null;
-//        });
-//        roleRepository.findByName("ROLE_SECRETARY").orElseGet(() -> {
-//            roleRepository.save(new Role("ROLE_SECRETARY"));
-//            return null;
-//        });
-//        roleRepository.findByName("ROLE_AIMODOTIS").orElseGet(() -> {
-//            roleRepository.save(new Role("ROLE_AIMODOTIS"));
-//            return null;
-//        });
-//    }
     private void createUsersAndRoles() {
         final List<String> rolesToCreate = List.of("ROLE_ADMIN", "ROLE_USER", "ROLE_SECRETARY", "ROLE_AIMODOTIS");
         for (final String roleName : rolesToCreate) {
@@ -78,16 +60,6 @@ public class InitialDataService {
         }
 
 
-
-//        this.userRepository.findByUsername("admin").orElseGet(() -> {
-//            User user = new User("admin", "admin@hua.gr", this.passwordEncoder.encode("1234"));
-//            Set<Role> roles = new HashSet<>();
-//            roles.add(this.roleRepository.findByName("ROLE_USER").orElseThrow());
-//            roles.add(this.roleRepository.findByName("ROLE_ADMIN").orElseThrow());
-//            user.setRoles(roles);
-//            userRepository.save(user);
-//            return null;
-//        });
         this.userRepository.findByEmail("georgegolf1234@gmail.com").orElseGet(() -> {
             User user = new User("admin","georgegolf1234@gmail.com", this.passwordEncoder.encode("1234"));
             Set<Role> roles = new HashSet<>();

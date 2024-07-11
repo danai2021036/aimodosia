@@ -21,31 +21,6 @@ pipeline {
             }
         }
 
-//        stage('Replace SendGrid Key') {
-//            steps {
-//                script {
-//                    echo "SENDGRID_KEY: ${SENDGRID_KEY}"
-//                    sh """
-//                echo "Replacing SendGrid Key..."
-//                sed -i "s|app.sendgrid.key=.*|app.sendgrid.key=${SENDGRID_KEY}|" ~/workspace/docker-aimodosia/src/main/resources/application.properties
-//                echo "Replacement done. Verifying..."
-//                grep "app.sendgrid.key=" ~/workspace/docker-aimodosia/src/main/resources/application.properties
-//            """
-//                }
-//            }
-//        }
-
-//        stage('Replace SendGrid Key') {
-//            steps {
-//                sh '''
-//                    echo "Replacing SendGrid Key..."
-//                    sed -i "s|app.sendgrid.key=.*|app.sendgrid.key=${SENDGRID_KEY}|" ~/workspace/docker-aimodosia/src/main/resources/application.properties
-//                    echo "Replacement done. Verifying..."
-//                    grep "app.sendgrid.key=" ~/workspace/docker-aimodosia/src/main/resources/application.properties
-//                '''
-//            }
-//        }
-
         stage('Test') {
             steps {
                 sh 'chmod +x ./mvnw && ./mvnw test'
@@ -66,13 +41,7 @@ pipeline {
                 '''
             }
         }
-//        stage('Replace SendGrid Key') {
-//            steps {
-//                sh '''
-//                    sed -i 's/app.sendgrid.key=.*/app.sendgrid.key=${SENDGRID_KEY}/' ~/workspace/docker-aimodosia/src/main/resources/application.properties
-//                '''
-//            }
-//        }
+
         stage('Docker build and push') {
             steps {
                 sh '''
@@ -87,9 +56,4 @@ pipeline {
 
     }
 
-//    post {
-//        always {
-//            mail  to: "tsadimas@hua.gr", body: "Project ${env.JOB_NAME} <br>, Build status ${currentBuild.currentResult} <br> Build Number: ${env.BUILD_NUMBER} <br> Build URL: ${env.BUILD_URL}", subject: "JENKINS: Project name -> ${env.JOB_NAME}, Build -> ${currentBuild.currentResult}"
-//        }
-//    }
 }
